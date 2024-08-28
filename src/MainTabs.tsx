@@ -1,24 +1,38 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Header, getHeaderTitle } from '@react-navigation/elements';
-import { useTheme } from '@react-navigation/native';
+import { BellIcon, MoonIcon, SunIcon } from 'lucide-react-native';
 import {
-  BookOpenTextIcon,
-  BookmarkIcon,
+  BookOpenIcon,
   HomeIcon,
-  UserIcon
-} from 'lucide-react-native';
+  NewspaperIcon,
+  UserIcon,
+} from 'react-native-heroicons/outline';
+import {
+  BookOpenIcon as BookOpenSolidIcon,
+  HomeIcon as HomeSolidIcon,
+  NewspaperIcon as NewspaperSolidIcon,
+  UserIcon as UserSolidIcon,
+} from 'react-native-heroicons/solid';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { HeaderLogo } from './components/HeaderLogo';
+import { useAppearance } from './components/appearance';
 import HomeScreen from './home/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 
 const MainTabs = () => {
-  const { colors } = useTheme();
+  const {
+    theme: { dark },
+    update,
+  } = useAppearance();
+
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
         header: ({ options, route }) => (
           <Header
+            {...options}
             title={getHeaderTitle(options, route.name)}
             headerStyle={{
               elevation: 0,
@@ -31,18 +45,46 @@ const MainTabs = () => {
         name="Home"
         component={HomeScreen}
         options={{
+          headerShadowVisible: false,
+          headerTitleAlign: 'left',
+          headerTitle: props => <HeaderLogo {...props} />,
           tabBarIcon: props => {
+            if (props.focused) {
+              return <HomeSolidIcon {...props} />;
+            }
             return <HomeIcon {...props} />;
           },
-          // headerRight: () => (
-          //   <Item
-          //     title="Browse"
-          //     iconName="search"
-          //     color="dimgray"
-          //     IconComponent={SearchIcon as any}
-          //     onPress={() => {}}
-          //   />
-          // ),
+          headerRight: () => (
+            <HeaderButtons>
+              <Item
+                title="Browse"
+                iconName="notification"
+                IconComponent={BellIcon as any}
+                color="gray"
+              />
+              <Item
+                title="Theme"
+                iconName="mode"
+                IconComponent={(dark ? MoonIcon : SunIcon) as any}
+                color="gray"
+                onPress={() => {
+                  update?.(dark ? 'light' : 'dark');
+                }}
+              />
+            </HeaderButtons>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Blogs"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: props => {
+            if (props.focused) {
+              return <NewspaperSolidIcon {...props} />;
+            }
+            return <NewspaperIcon {...props} />;
+          },
         }}
       />
       <Tab.Screen
@@ -51,16 +93,10 @@ const MainTabs = () => {
         options={{
           headerTitle: 'My Courses',
           tabBarIcon: props => {
-            return <BookOpenTextIcon {...props} />;
-          },
-        }}
-      />
-      <Tab.Screen
-        name="Bookmarks"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: props => {
-            return <BookmarkIcon {...props} />;
+            if (props.focused) {
+              return <BookOpenSolidIcon {...props} />;
+            }
+            return <BookOpenIcon {...props} />;
           },
         }}
       />
@@ -69,6 +105,9 @@ const MainTabs = () => {
         component={HomeScreen}
         options={{
           tabBarIcon: props => {
+            if (props.focused) {
+              return <UserSolidIcon {...props} />;
+            }
             return <UserIcon {...props} />;
           },
         }}
