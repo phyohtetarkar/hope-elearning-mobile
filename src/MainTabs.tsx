@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Header, getHeaderTitle } from '@react-navigation/elements';
 import { BellIcon, MoonIcon, SunIcon } from 'lucide-react-native';
 import {
   BookOpenIcon,
@@ -14,59 +13,67 @@ import {
   UserIcon as UserSolidIcon,
 } from 'react-native-heroicons/solid';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { HeaderLogo } from './components/HeaderLogo';
+import BlogListScreen from './blog/BlogListScreen';
 import { useAppearance } from './components/appearance';
+import { HeaderLogo } from './components/ui/HeaderLogo';
 import HomeScreen from './home/HomeScreen';
 
-const Tab = createBottomTabNavigator();
+export type BottomTabParamList = {
+  Home: undefined;
+  Blogs: undefined;
+  Learnings: undefined;
+  Profile: undefined;
+};
+
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const MainTabs = () => {
   const {
-    theme: { dark },
+    theme: { dark, colors },
     update,
   } = useAppearance();
 
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={{
         tabBarShowLabel: false,
-        header: ({ options, route }) => (
-          <Header
-            {...options}
-            title={getHeaderTitle(options, route.name)}
-            headerStyle={{
-              elevation: 0,
-              borderBottomWidth: 0.25,
-            }}
-          />
-        ),
+        headerShadowVisible: false,
+        headerStyle: {
+          backgroundColor: !dark ? colors.primary : undefined,
+        },
+        headerTintColor: dark ? colors.text : colors.primaryForeground,
       }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          headerShadowVisible: false,
           headerTitleAlign: 'left',
           headerTitle: props => <HeaderLogo {...props} />,
+          headerStyle: !dark
+            ? {
+                backgroundColor: 'white',
+              }
+            : undefined,
           tabBarIcon: props => {
             if (props.focused) {
               return <HomeSolidIcon {...props} />;
             }
             return <HomeIcon {...props} />;
           },
-          headerRight: () => (
+          headerRight: props => (
             <HeaderButtons>
               <Item
-                title="Browse"
+                title="Notification"
                 iconName="notification"
                 IconComponent={BellIcon as any}
-                color="gray"
+                color={'gray'}
               />
               <Item
                 title="Theme"
                 iconName="mode"
                 IconComponent={(dark ? MoonIcon : SunIcon) as any}
-                color="gray"
+                color={'gray'}
                 onPress={() => {
                   update?.(dark ? 'light' : 'dark');
                 }}
@@ -77,7 +84,7 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name="Blogs"
-        component={HomeScreen}
+        component={BlogListScreen}
         options={{
           tabBarIcon: props => {
             if (props.focused) {

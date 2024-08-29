@@ -7,12 +7,11 @@ import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useAppearance } from '../appearance';
 import { BaseStyles } from '../styles';
 import { CFText } from '../ui/CFText';
-import { Divider } from '../ui/Divider';
 import { Spacer } from '../ui/Spacer';
 
-interface BlogRecentItemProps {}
+interface BlogListItemProps {}
 
-export const BlogRecentItem = ({}: BlogRecentItemProps) => {
+export const BlogListItem = ({}: BlogListItemProps) => {
   const {
     theme: { colors },
   } = useAppearance();
@@ -22,7 +21,6 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
 
   return (
     <TouchableHighlight
-      style={{ borderRadius: styles.container.borderRadius }}
       underlayColor={colors.highlight}
       onPress={() => {
         navigation.navigate('BlogDetail');
@@ -30,19 +28,8 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
       <View
         style={{
           ...styles.container,
-          borderColor: colors.border,
-          backgroundColor: colors.card,
+          backgroundColor: colors.background,
         }}>
-        <View style={styles.cover}>
-          <Image
-            source={require('../course/course.jpg')}
-            style={styles.cover}
-            resizeMode="cover"
-          />
-        </View>
-
-        <Divider orientation="horizontal" />
-
         <View style={styles.infoContainer}>
           <CFText
             numberOfLines={1}
@@ -50,7 +37,7 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
             NoSQL data modeling
           </CFText>
 
-          <Spacer orientation="vertical" spacing={8} />
+          <Spacer orientation="vertical" spacing={4} />
 
           <CFText numberOfLines={1} style={{ ...styles.wpmText }}>
             {wordPerMinute(150)} min read
@@ -58,19 +45,13 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
 
           <Spacer orientation="vertical" spacing={16} />
 
-          <Divider orientation="horizontal" stroke={0.7} />
-
-          <Spacer orientation="vertical" spacing={16} />
-
-          <View style={{ ...styles.footerContainer }}>
+          <View style={styles.footerContainer}>
             <View style={styles.footerItem}>
               <CalendarDaysIcon color="dimgray" size={14} />
               <CFText style={styles.footerText}>
-                {formatRelativeTimestamp('2024-08-26')}
+                {formatRelativeTimestamp('2024-07-26')}
               </CFText>
             </View>
-
-            <View style={{ flex: 1 }} />
 
             <View style={styles.footerItem}>
               <EyeIcon color="dimgray" size={14} />
@@ -78,6 +59,12 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
             </View>
           </View>
         </View>
+
+        <Image
+          source={require('../course/course.jpg')}
+          style={styles.cover}
+          resizeMode="cover"
+        />
       </View>
     </TouchableHighlight>
   );
@@ -86,19 +73,21 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: BaseStyles.values.borderRadius,
-    borderWidth: 0.7,
     overflow: 'hidden',
+    flexDirection: 'row',
+    gap: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
   },
   cover: {
-    flex: 1,
     aspectRatio: 16 / 9,
-    width: 300,
+    overflow: 'hidden',
+    width: 100,
+    borderRadius: BaseStyles.values.borderRadius,
   },
   infoContainer: {
     flex: 1,
     overflow: 'hidden',
-    padding: 16,
   },
   title: {
     fontWeight: '600',
@@ -109,8 +98,10 @@ const styles = StyleSheet.create({
     color: 'dimgray',
   },
   footerContainer: {
+    flex: 1,
     flexDirection: 'row',
     gap: 10,
+    alignItems: 'center',
   },
   footerItem: {
     flexDirection: 'row',

@@ -2,7 +2,7 @@ import { Platform, StyleSheet } from 'react-native';
 
 export const BaseStyles = StyleSheet.create({
   values: {
-    borderRadius: 5,
+    borderRadius: 2,
   },
   shadow: {
     ...Platform.select({

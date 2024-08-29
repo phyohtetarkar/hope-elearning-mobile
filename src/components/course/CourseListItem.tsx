@@ -1,8 +1,14 @@
 import { ChartNoAxesColumnIncreasingIcon, StarIcon } from 'lucide-react-native';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import { useAppearance } from '../appearance';
 import { BaseStyles } from '../styles';
 import { Spacer } from '../ui/Spacer';
+import { CFText } from '../ui/CFText';
 
 interface CourseListItemProps {}
 
@@ -12,42 +18,47 @@ export const CourseListItem = ({}: CourseListItemProps) => {
   } = useAppearance();
 
   return (
-    <View
-      style={{
-        ...styles.container,
-        borderColor: colors.border,
-        backgroundColor: colors.card,
-      }}>
-      <Image
-        source={require('./course.jpg')}
-        style={styles.cover}
-        resizeMode="cover"
-      />
-      <View style={styles.infoContainer}>
-        <Text style={{ ...styles.categoryText, color: colors.primary }}>
-          Programming
-        </Text>
-        <Spacer orientation="vertical" spacing={4} />
-        <Text
-          numberOfLines={1}
-          style={{ ...styles.courseTitle, color: colors.text }}>
-          Introduction to Java
-        </Text>
+    <TouchableHighlight
+      style={{ borderRadius: styles.container.borderRadius }}
+      underlayColor={colors.highlight}
+      onPress={() => {}}>
+      <View
+        style={{
+          ...styles.container,
+          borderColor: colors.border,
+          backgroundColor: colors.card,
+        }}>
+        <Image
+          source={require('./course.jpg')}
+          style={styles.cover}
+          resizeMode="cover"
+        />
+        <View style={styles.infoContainer}>
+          <CFText style={{ ...styles.categoryText, color: colors.primary }}>
+            Programming
+          </CFText>
+          <Spacer orientation="vertical" spacing={4} />
+          <CFText
+            numberOfLines={1}
+            style={{ ...styles.courseTitle }}>
+            Introduction to Java
+          </CFText>
 
-        <View style={{ flex: 1, flexDirection: 'column' }} />
+          <View style={{ flex: 1, flexDirection: 'column' }} />
 
-        <View style={styles.footerContainer}>
-          <View style={styles.footerItem}>
-            <StarIcon color="#ffb703" fill="#ffb703" size={16} />
-            <Text style={styles.footerText}>4.5</Text>
-          </View>
-          <View style={styles.footerItem}>
-            <ChartNoAxesColumnIncreasingIcon color="dimgray" size={16} />
-            <Text style={styles.footerText}>Beginner</Text>
+          <View style={styles.footerContainer}>
+            <View style={styles.footerItem}>
+              <StarIcon color="#ffb703" fill="#ffb703" size={16} />
+              <CFText style={styles.footerText}>4.5</CFText>
+            </View>
+            <View style={styles.footerItem}>
+              <ChartNoAxesColumnIncreasingIcon color="dimgray" size={16} />
+              <CFText style={styles.footerText}>Beginner</CFText>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableHighlight>
   );
 };
 
@@ -81,6 +92,7 @@ const styles = StyleSheet.create({
   footerContainer: {
     flexDirection: 'row',
     gap: 10,
+    alignItems: 'center',
   },
   footerItem: {
     flexDirection: 'row',

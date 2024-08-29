@@ -1,42 +1,54 @@
-import { Header, getHeaderTitle } from '@react-navigation/elements';
 import {
   NavigationContainer,
   useNavigationContainerRef,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StatusBar } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Share2Icon } from 'lucide-react-native';
+import { Item } from 'react-navigation-header-buttons';
 import MainTabs from './MainTabs';
+import BlogDetailScreen from './blog/BlogDetailScreen';
 import { useAppearance } from './components/appearance';
+import { CustomStatusBar } from './components/ui/CustomStatusBar';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  MainTabs: undefined;
+  BlogDetail: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainNavigation = () => {
   const navigationRef = useNavigationContainerRef();
   const { theme } = useAppearance();
 
-  const backgroundStyle = {
-    backgroundColor: theme.dark ? Colors.darker : Colors.lighter,
-  };
-
   return (
     <NavigationContainer ref={navigationRef} theme={theme}>
-      <StatusBar
-        barStyle={theme.dark ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-        translucent={theme.dark}
-      />
+      <CustomStatusBar />
       <Stack.Navigator
         screenOptions={{
-          header: ({ options, route }) => (
-            <Header
-              title={getHeaderTitle(options, route.name)}
-              headerStyle={{
-                elevation: 0,
-                borderBottomWidth: 0.7,
-              }}
-            />
-          ),
+          // header: ({ options, route }) => (
+          //   <Header
+          //     title={getHeaderTitle(options, route.name)}
+          //     headerStyle={{
+          //       elevation: 0,
+          //       borderBottomWidth: 0.7,
+          //     }}
+          //   />
+          // ),
+          headerShadowVisible: false,
+          headerStyle: !theme.dark
+            ? {
+                backgroundColor: theme.colors.primary,
+              }
+            : undefined,
+          headerTintColor: theme.dark
+            ? theme.colors.text
+            : theme.colors.primaryForeground,
+          headerTitleStyle: {
+            color: theme.dark
+              ? theme.colors.text
+              : theme.colors.primaryForeground,
+          },
         }}>
         <Stack.Screen
           name="MainTabs"
@@ -45,6 +57,25 @@ const MainNavigation = () => {
             headerShown: false,
             animation: 'fade',
           }}
+        />
+        <Stack.Screen
+          name="BlogDetail"
+          component={BlogDetailScreen}
+          options={({ route }) => ({
+            headerBackTitle: 'Back',
+            title: '',
+            animation: 'slide_from_right',
+            headerRight: props => {
+              return (
+                <Item
+                  title="Share"
+                  iconName="share"
+                  IconComponent={Share2Icon as any}
+                  color={theme.dark ? 'gray' : theme.colors.primaryForeground}
+                />
+              );
+            },
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>

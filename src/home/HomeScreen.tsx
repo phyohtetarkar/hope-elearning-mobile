@@ -1,9 +1,12 @@
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
+import { BottomTabParamList } from '@src/MainTabs';
 import { useAppearance } from '@src/components/appearance';
 import { BlogRecentItem } from '@src/components/blog/BlogRecentItem';
 import { CourseListItem } from '@src/components/course/CourseListItem';
-import { BaseStyles } from '@src/components/styles';
+import { CFText } from '@src/components/ui/CFText';
 import { Chip } from '@src/components/ui/Chip';
+import { CustomStatusBar } from '@src/components/ui/CustomStatusBar';
 import { Spacer } from '@src/components/ui/Spacer';
 import { SearchIcon } from 'lucide-react-native';
 import type { PropsWithChildren } from 'react';
@@ -12,52 +15,19 @@ import {
   Dimensions,
   FlatList,
   ListRenderItemInfo,
-  SafeAreaView,
+  RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
 type HeadingProps = PropsWithChildren<{
   title: string;
   seeAll?: () => void;
 }>;
-
-function Section({ children, title }: SectionProps): React.JSX.Element {
-  const {
-    theme: { dark },
-  } = useAppearance();
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: dark ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: dark ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
 
 const Heading = ({ title, seeAll }: HeadingProps) => {
   const {
@@ -66,24 +36,24 @@ const Heading = ({ title, seeAll }: HeadingProps) => {
   return (
     <View style={styles.headingContainer}>
       <View style={{ flex: 1 }}>
-        <Text
+        <CFText
           numberOfLines={1}
           style={{
             ...styles.headingTitle,
             color: colors.text,
           }}>
           {title}
-        </Text>
+        </CFText>
       </View>
       {seeAll && (
         <TouchableOpacity activeOpacity={0.5} onPress={seeAll}>
-          <Text
+          <CFText
             style={{
               color: colors.primary,
               fontWeight: '500',
             }}>
             See all
-          </Text>
+          </CFText>
         </TouchableOpacity>
       )}
     </View>
@@ -95,7 +65,8 @@ const HomeScreen = () => {
     theme: { dark, colors },
   } = useAppearance();
 
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<BottomTabNavigationProp<BottomTabParamList>>();
 
   const themeStyle = {
     backgroundColor: dark ? Colors.black : Colors.white,
@@ -137,94 +108,91 @@ const HomeScreen = () => {
   };
 
   return (
-    <SafeAreaView style={[themeStyle, { flex: 1 }]}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentInsetAdjustmentBehavior="automatic">
-        <View style={[themeStyle, styles.container]}>
-          {/* <View
-            style={{
-              ...styles.bannerContainer,
-              backgroundColor: colors.primary,
-            }}></View> */}
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentInsetAdjustmentBehavior="automatic"
+      refreshControl={
+        <RefreshControl
+          refreshing={false}
+          colors={[colors.primary]}
+          tintColor={'gray'}
+          onRefresh={() => {}}
+        />
+      }>
+      <CustomStatusBar style="dark" />
+      <View style={[themeStyle, styles.container]}>
+        <CFText
+          style={{
+            ...styles.searchTitle,
+            color: colors.text,
+          }}>
+          What do you want to learn?
+        </CFText>
 
-          <Text
-            style={{
-              ...styles.searchTitle,
-              color: colors.text,
-            }}>
-            What do you want to learn?
-          </Text>
+        <Spacer orientation="vertical" spacing={10} />
 
-          <Spacer orientation="vertical" spacing={10} />
-
-          <View
-            style={{
-              ...styles.searchContainer,
-              backgroundColor: colors.muted,
-            }}>
-            <SearchIcon color={'gray'} />
-            <TextInput
-              style={{ ...styles.searchInput }}
-              placeholderTextColor={'#aaa'}
-              placeholder="Browse courses..."
-              readOnly
-            />
-          </View>
-
-          <Spacer orientation="vertical" spacing={24} />
-
-          <Heading title="Categories" seeAll={() => {}} />
-
-          <Spacer orientation="vertical" spacing={12} />
-
-          {/* <FlatList
-            data={[1, 2, 3, 4]}
-            renderItem={renderCategoryItem}
-            keyExtractor={item => item.toString()}
-            horizontal={true}
-            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-            showsHorizontalScrollIndicator={false}
-          /> */}
-
-          <View style={styles.categoryContainer}>
-            {[1, 2, 3, 4, 5].map(c => {
-              return <Chip key={c} title="Programming" onPress={() => {}} />;
-            })}
-          </View>
-
-          <Spacer orientation="vertical" spacing={24} />
-
-          <Heading title="Top courses" seeAll={() => {}} />
-
-          <Spacer orientation="vertical" spacing={12} />
-
-          <FlatList
-            data={[1, 2, 3]}
-            renderItem={renderCourseItem}
-            keyExtractor={item => item.toString()}
-            horizontal={true}
-            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-            showsHorizontalScrollIndicator={false}
-          />
-
-          <Spacer orientation="vertical" spacing={24} />
-
-          <Heading title="Recent posts" seeAll={() => {}} />
-
-          <Spacer orientation="vertical" spacing={12} />
-
-          <FlatList
-            data={[1, 2, 3]}
-            renderItem={renderBlogItem}
-            keyExtractor={item => item.toString()}
-            horizontal={true}
-            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-            showsHorizontalScrollIndicator={false}
+        <View
+          style={{
+            ...styles.searchContainer,
+            backgroundColor: colors.muted,
+          }}>
+          <SearchIcon color={'gray'} />
+          <TextInput
+            style={{ ...styles.searchInput }}
+            placeholderTextColor={'#aaa'}
+            placeholder="Browse courses..."
+            readOnly
           />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+
+        <Spacer orientation="vertical" spacing={24} />
+
+        <Heading title="Categories" seeAll={() => {}} />
+
+        <Spacer orientation="vertical" spacing={12} />
+
+        <View style={styles.categoryContainer}>
+          {[1, 2, 3, 4, 5].map(c => {
+            return <Chip key={c} title="Programming" onPress={() => {}} />;
+          })}
+        </View>
+
+        <Spacer orientation="vertical" spacing={24} />
+
+        <Heading title="Top courses" seeAll={() => {}} />
+
+        <Spacer orientation="vertical" spacing={12} />
+
+        <FlatList
+          data={[1, 2, 3]}
+          renderItem={renderCourseItem}
+          keyExtractor={item => item.toString()}
+          horizontal={true}
+          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          showsHorizontalScrollIndicator={false}
+        />
+
+        <Spacer orientation="vertical" spacing={24} />
+
+        <Heading
+          title="Recent posts"
+          seeAll={() => {
+            navigation.navigate('Blogs');
+          }}
+        />
+
+        <Spacer orientation="vertical" spacing={12} />
+
+        <FlatList
+          data={[1, 2, 3]}
+          renderItem={renderBlogItem}
+          keyExtractor={item => item.toString()}
+          horizontal={true}
+          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
@@ -233,27 +201,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     padding: 16,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  bannerContainer: {
-    flex: 1,
-    aspectRatio: 6 / 3,
-    borderRadius: BaseStyles.values.borderRadius,
   },
   headingContainer: {
     flex: 1,
@@ -280,11 +227,6 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-  },
-  postContainer: {
-    flex: 1,
-    gap: 16,
-    alignItems: 'stretch',
   },
   categoryContainer: {
     flex: 1,
