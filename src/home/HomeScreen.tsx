@@ -6,7 +6,6 @@ import { BlogRecentItem } from '@src/components/blog/BlogRecentItem';
 import { CourseListItem } from '@src/components/course/CourseListItem';
 import { CFText } from '@src/components/ui/CFText';
 import { Chip } from '@src/components/ui/Chip';
-import { CustomStatusBar } from '@src/components/ui/CustomStatusBar';
 import { Spacer } from '@src/components/ui/Spacer';
 import { SearchIcon } from 'lucide-react-native';
 import type { PropsWithChildren } from 'react';
@@ -119,7 +118,6 @@ const HomeScreen = () => {
           onRefresh={() => {}}
         />
       }>
-      <CustomStatusBar style="dark" />
       <View style={[themeStyle, styles.container]}>
         <CFText
           style={{

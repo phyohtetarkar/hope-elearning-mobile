@@ -35,7 +35,7 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
         }}>
         <View style={styles.cover}>
           <Image
-            source={require('../course/course.jpg')}
+            source={require('@src/common/course.jpg')}
             style={styles.cover}
             resizeMode="cover"
           />
@@ -64,7 +64,7 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
 
           <View style={{ ...styles.footerContainer }}>
             <View style={styles.footerItem}>
-              <CalendarDaysIcon color="dimgray" size={14} />
+              <CalendarDaysIcon color="gray" size={14} />
               <CFText style={styles.footerText}>
                 {formatRelativeTimestamp('2024-08-26')}
               </CFText>
@@ -73,7 +73,7 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
             <View style={{ flex: 1 }} />
 
             <View style={styles.footerItem}>
-              <EyeIcon color="dimgray" size={14} />
+              <EyeIcon color="gray" size={14} />
               <CFText style={styles.footerText}>1k</CFText>
             </View>
           </View>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   wpmText: {
     fontSize: 14,
-    color: 'dimgray',
+    color: 'gray',
   },
   footerContainer: {
     flexDirection: 'row',
@@ -119,6 +119,6 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
-    color: 'dimgray',
+    color: 'gray',
   },
 });

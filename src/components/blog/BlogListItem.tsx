@@ -47,21 +47,21 @@ export const BlogListItem = ({}: BlogListItemProps) => {
 
           <View style={styles.footerContainer}>
             <View style={styles.footerItem}>
-              <CalendarDaysIcon color="dimgray" size={14} />
+              <CalendarDaysIcon color="gray" size={14} />
               <CFText style={styles.footerText}>
                 {formatRelativeTimestamp('2024-07-26')}
               </CFText>
             </View>
 
             <View style={styles.footerItem}>
-              <EyeIcon color="dimgray" size={14} />
+              <EyeIcon color="gray" size={14} />
               <CFText style={styles.footerText}>1k</CFText>
             </View>
           </View>
         </View>
 
         <Image
-          source={require('../course/course.jpg')}
+          source={require('@src/common/course.jpg')}
           style={styles.cover}
           resizeMode="cover"
         />
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   wpmText: {
     fontSize: 14,
-    color: 'dimgray',
+    color: 'gray',
   },
   footerContainer: {
     flex: 1,
@@ -110,6 +110,6 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
-    color: 'dimgray',
+    color: 'gray',
   },
 });

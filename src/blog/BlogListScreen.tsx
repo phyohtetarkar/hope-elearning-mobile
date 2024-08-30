@@ -41,7 +41,6 @@ const BlogListScreen = () => {
               title="Filter"
               iconName="filter"
               IconComponent={ListFilterIcon as any}
-              color={dark ? 'gray' : colors.primaryForeground}
             />
           </HeaderButtons>
         );
@@ -56,7 +55,7 @@ const BlogListScreen = () => {
   return (
     <SafeAreaView style={[themeStyle, { flex: 1 }]}>
       <View style={{ flex: 1 }}>
-        <View
+        {/* <View
           style={{
             ...styles.tagContainer,
             borderBottomColor: colors.border,
@@ -75,7 +74,8 @@ const BlogListScreen = () => {
               alignItems: 'center',
             }}
           />
-        </View>
+        </View> */}
+        <Divider orientation='horizontal' stroke={0.7} />
         <FlatList
           data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
           renderItem={renderBlogItem}

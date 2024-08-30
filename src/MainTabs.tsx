@@ -39,10 +39,6 @@ const MainTabs = () => {
       screenOptions={{
         tabBarShowLabel: false,
         headerShadowVisible: false,
-        headerStyle: {
-          backgroundColor: !dark ? colors.primary : undefined,
-        },
-        headerTintColor: dark ? colors.text : colors.primaryForeground,
       }}>
       <Tab.Screen
         name="Home"
@@ -50,11 +46,6 @@ const MainTabs = () => {
         options={{
           headerTitleAlign: 'left',
           headerTitle: props => <HeaderLogo {...props} />,
-          headerStyle: !dark
-            ? {
-                backgroundColor: 'white',
-              }
-            : undefined,
           tabBarIcon: props => {
             if (props.focused) {
               return <HomeSolidIcon {...props} />;
@@ -67,13 +58,11 @@ const MainTabs = () => {
                 title="Notification"
                 iconName="notification"
                 IconComponent={BellIcon as any}
-                color={'gray'}
               />
               <Item
                 title="Theme"
                 iconName="mode"
                 IconComponent={(dark ? MoonIcon : SunIcon) as any}
-                color={'gray'}
                 onPress={() => {
                   update?.(dark ? 'light' : 'dark');
                 }}

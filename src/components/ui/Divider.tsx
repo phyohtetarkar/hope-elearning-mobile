@@ -15,7 +15,6 @@ const Divider = ({ orientation, stroke = 1 }: DividerProps) => {
     return (
       <View
         style={{
-          flex: 1,
           width: stroke,
           backgroundColor: colors.border,
         }}
@@ -25,7 +24,6 @@ const Divider = ({ orientation, stroke = 1 }: DividerProps) => {
   return (
     <View
       style={{
-        flex: 1,
         height: stroke,
         backgroundColor: colors.border,
       }}

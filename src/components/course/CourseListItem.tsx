@@ -29,7 +29,7 @@ export const CourseListItem = ({}: CourseListItemProps) => {
           backgroundColor: colors.card,
         }}>
         <Image
-          source={require('./course.jpg')}
+          source={require('@src/common/course.jpg')}
           style={styles.cover}
           resizeMode="cover"
         />
@@ -52,7 +52,7 @@ export const CourseListItem = ({}: CourseListItemProps) => {
               <CFText style={styles.footerText}>4.5</CFText>
             </View>
             <View style={styles.footerItem}>
-              <ChartNoAxesColumnIncreasingIcon color="dimgray" size={16} />
+              <ChartNoAxesColumnIncreasingIcon color="gray" size={16} />
               <CFText style={styles.footerText}>Beginner</CFText>
             </View>
           </View>
@@ -101,6 +101,6 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
-    color: 'dimgray',
+    color: 'gray',
   },
 });

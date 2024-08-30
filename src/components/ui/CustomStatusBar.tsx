@@ -34,7 +34,7 @@ export const CustomStatusBar = ({ style }: CustomStatusBarProps) => {
   if (style === 'dark') {
     return (
       <StatusBar
-        barStyle={dark ? 'light-content' :'dark-content'}
+        barStyle={'dark-content'}
         backgroundColor={Colors.lighter}
         translucent={true}
       />
@@ -43,7 +43,7 @@ export const CustomStatusBar = ({ style }: CustomStatusBarProps) => {
 
   return (
     <StatusBar
-      barStyle={'light-content'}
+      barStyle={dark ? 'light-content' : 'dark-content'}
       backgroundColor={backgroundStyle.backgroundColor}
       translucent={dark}
     />

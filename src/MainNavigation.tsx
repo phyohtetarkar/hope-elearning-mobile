@@ -35,20 +35,9 @@ const MainNavigation = () => {
           //     }}
           //   />
           // ),
+          headerBackTitleVisible: false,
           headerShadowVisible: false,
-          headerStyle: !theme.dark
-            ? {
-                backgroundColor: theme.colors.primary,
-              }
-            : undefined,
-          headerTintColor: theme.dark
-            ? theme.colors.text
-            : theme.colors.primaryForeground,
-          headerTitleStyle: {
-            color: theme.dark
-              ? theme.colors.text
-              : theme.colors.primaryForeground,
-          },
+          headerTintColor: theme.colors.text,
         }}>
         <Stack.Screen
           name="MainTabs"
@@ -62,7 +51,7 @@ const MainNavigation = () => {
           name="BlogDetail"
           component={BlogDetailScreen}
           options={({ route }) => ({
-            headerBackTitle: 'Back',
+            headerBackTitleVisible: false,
             title: '',
             animation: 'slide_from_right',
             headerRight: props => {
@@ -71,7 +60,6 @@ const MainNavigation = () => {
                   title="Share"
                   iconName="share"
                   IconComponent={Share2Icon as any}
-                  color={theme.dark ? 'gray' : theme.colors.primaryForeground}
                 />
               );
             },
