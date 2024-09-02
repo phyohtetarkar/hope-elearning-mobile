@@ -13,7 +13,7 @@ export type Theme = {
     text: string;
     border: string;
     notification: string;
-    muted: string;
+    default: string;
     highlight: string;
   };
 };
@@ -24,8 +24,8 @@ export const LightTheme: Theme = {
     ...DefaultTheme.colors,
     primary: '#5048e5',
     primaryForeground: '#ffffff',
-    muted: '#eeeeee',
     background: '#ffffff',
+    default: '#e5e5e5',
     highlight: '#777777',
   },
 };
@@ -36,8 +36,8 @@ export const DarkTheme: Theme = {
     ...NativeDarkTheme.colors,
     primary: '#6467f2',
     primaryForeground: '#f2f2f2',
-    muted: '#191919',
     background: '#000000',
+    default: '#212121',
     highlight: '#777777',
   },
 };

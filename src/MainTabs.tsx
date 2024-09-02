@@ -13,17 +13,11 @@ import {
   UserIcon as UserSolidIcon,
 } from 'react-native-heroicons/solid';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import BlogListScreen from './blog/BlogListScreen';
 import { useAppearance } from './components/appearance';
 import { HeaderLogo } from './components/ui/HeaderLogo';
-import HomeScreen from './home/HomeScreen';
-
-export type BottomTabParamList = {
-  Home: undefined;
-  Blogs: undefined;
-  Learnings: undefined;
-  Profile: undefined;
-};
+import { BottomTabParamList } from './navigations';
+import BlogListScreen from './screens/blog/BlogListScreen';
+import HomeScreen from './screens/home/HomeScreen';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -39,6 +33,7 @@ const MainTabs = () => {
       screenOptions={{
         tabBarShowLabel: false,
         headerShadowVisible: false,
+        headerTintColor: colors.text,
       }}>
       <Tab.Screen
         name="Home"
@@ -58,11 +53,13 @@ const MainTabs = () => {
                 title="Notification"
                 iconName="notification"
                 IconComponent={BellIcon as any}
+                color={props.tintColor}
               />
               <Item
                 title="Theme"
                 iconName="mode"
                 IconComponent={(dark ? MoonIcon : SunIcon) as any}
+                color={props.tintColor}
                 onPress={() => {
                   update?.(dark ? 'light' : 'dark');
                 }}

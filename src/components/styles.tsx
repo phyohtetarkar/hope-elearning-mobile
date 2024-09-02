@@ -1,8 +1,8 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, TextStyle } from 'react-native';
 
-export const BaseStyles = StyleSheet.create({
+export const DefaultStyles = {
   values: {
-    borderRadius: 2,
+    borderRadius: 3,
   },
   shadow: {
     ...Platform.select({
@@ -20,4 +20,42 @@ export const BaseStyles = StyleSheet.create({
       },
     }),
   },
-});
+  fonts: {
+    regular: Platform.select<TextStyle>({
+      ios: {
+        fontWeight: '400',
+        fontFamily: 'Roboto',
+      },
+      android: {
+        fontFamily: 'Roboto-Regular',
+      },
+    }),
+    medium: Platform.select<TextStyle>({
+      ios: {
+        fontWeight: '500',
+        fontFamily: 'Roboto',
+      },
+      android: {
+        fontFamily: 'Roboto-Medium',
+      },
+    }),
+    semiBold: Platform.select<TextStyle>({
+      ios: {
+        fontWeight: '600',
+        fontFamily: 'Roboto',
+      },
+      android: {
+        fontFamily: 'Roboto-Bold',
+      },
+    }),
+    bold: Platform.select<TextStyle>({
+      ios: {
+        fontWeight: '700',
+        fontFamily: 'Roboto',
+      },
+      android: {
+        fontFamily: 'Roboto-Black',
+      },
+    }),
+  },
+};

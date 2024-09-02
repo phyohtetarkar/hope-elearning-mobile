@@ -1,10 +1,9 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '@src/MainNavigation';
 import { useAppearance } from '@src/components/appearance';
 import { BlogListItem } from '@src/components/blog/BlogListItem';
-import { Chip } from '@src/components/ui/Chip';
 import { Divider } from '@src/components/ui/Divider';
+import { RootStackParamList } from '@src/navigations';
 import { ListFilterIcon } from 'lucide-react-native';
 import React, { useEffect, useRef } from 'react';
 import {
@@ -41,6 +40,7 @@ const BlogListScreen = () => {
               title="Filter"
               iconName="filter"
               IconComponent={ListFilterIcon as any}
+              color={props.tintColor}
             />
           </HeaderButtons>
         );
@@ -75,7 +75,7 @@ const BlogListScreen = () => {
             }}
           />
         </View> */}
-        <Divider orientation='horizontal' stroke={0.7} />
+        <Divider orientation="horizontal" stroke={0.5} />
         <FlatList
           data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
           renderItem={renderBlogItem}
@@ -90,7 +90,7 @@ const BlogListScreen = () => {
           }
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => {
-            return <Divider orientation="horizontal" stroke={0.7} />;
+            return <Divider orientation="horizontal" stroke={0.6} />;
           }}
 
           // onScroll={evt => {

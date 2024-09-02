@@ -1,7 +1,8 @@
 import { useMemo, type ReactNode } from 'react';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useAppearance } from '../appearance';
-import { CFText } from './CFText';
+import { Text } from './Text';
+import { DefaultStyles } from '../styles';
 
 interface ChipProps {
   title: string;
@@ -30,7 +31,7 @@ const Chip = ({
       };
     }
 
-    return { color: colors.text, backgroundColor: colors.muted };
+    return { color: colors.text, backgroundColor: colors.default };
   }, [variant, colors]);
 
   return (
@@ -46,13 +47,13 @@ const Chip = ({
           backgroundColor: backgroundColor,
         }}>
         {leading}
-        <CFText
+        <Text
           style={{
             ...styles.title,
             color: color,
           }}>
           {title}
-        </CFText>
+        </Text>
         {trailing}
       </View>
     </TouchableHighlight>
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   title: {
-    fontWeight: '500',
+    ...DefaultStyles.fonts.medium,
   },
 });
 

@@ -1,13 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '@src/MainNavigation';
-import { formatRelativeTimestamp, wordPerMinute } from '@src/common/utils';
+import { formatRelativeTimestamp, wordPerMinute } from '@src/lib/utils';
 import { CalendarDaysIcon, EyeIcon } from 'lucide-react-native';
 import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useAppearance } from '../appearance';
-import { BaseStyles } from '../styles';
-import { CFText } from '../ui/CFText';
+import { DefaultStyles } from '../styles';
+import { Text } from '../ui/Text';
 import { Spacer } from '../ui/Spacer';
+import { RootStackParamList } from '@src/navigations';
 
 interface BlogListItemProps {}
 
@@ -31,37 +31,37 @@ export const BlogListItem = ({}: BlogListItemProps) => {
           backgroundColor: colors.background,
         }}>
         <View style={styles.infoContainer}>
-          <CFText
+          <Text
             numberOfLines={1}
             style={{ ...styles.title }}>
             NoSQL data modeling
-          </CFText>
+          </Text>
 
           <Spacer orientation="vertical" spacing={4} />
 
-          <CFText numberOfLines={1} style={{ ...styles.wpmText }}>
+          <Text numberOfLines={1} style={{ ...styles.wpmText }}>
             {wordPerMinute(150)} min read
-          </CFText>
+          </Text>
 
           <Spacer orientation="vertical" spacing={16} />
 
           <View style={styles.footerContainer}>
             <View style={styles.footerItem}>
               <CalendarDaysIcon color="gray" size={14} />
-              <CFText style={styles.footerText}>
+              <Text style={styles.footerText}>
                 {formatRelativeTimestamp('2024-07-26')}
-              </CFText>
+              </Text>
             </View>
 
             <View style={styles.footerItem}>
               <EyeIcon color="gray" size={14} />
-              <CFText style={styles.footerText}>1k</CFText>
+              <Text style={styles.footerText}>1k</Text>
             </View>
           </View>
         </View>
 
         <Image
-          source={require('@src/common/course.jpg')}
+          source={require('@src/assets/images/course.jpg')}
           style={styles.cover}
           resizeMode="cover"
         />
@@ -83,19 +83,20 @@ const styles = StyleSheet.create({
     aspectRatio: 16 / 9,
     overflow: 'hidden',
     width: 100,
-    borderRadius: BaseStyles.values.borderRadius,
+    borderRadius: DefaultStyles.values.borderRadius,
   },
   infoContainer: {
     flex: 1,
     overflow: 'hidden',
   },
   title: {
-    fontWeight: '600',
     fontSize: 16,
+    ...DefaultStyles.fonts.semiBold
   },
   wpmText: {
     fontSize: 14,
     color: 'gray',
+    ...DefaultStyles.fonts.regular
   },
   footerContainer: {
     flex: 1,
@@ -111,5 +112,6 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 14,
     color: 'gray',
+    ...DefaultStyles.fonts.regular
   },
 });

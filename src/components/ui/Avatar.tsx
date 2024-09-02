@@ -32,7 +32,7 @@ export const Avatar = ({
         borderColor: borderColor ?? colors.border,
       }}>
       <Image
-        source={src ?? require('@src/common/profile.png')}
+        source={src ?? require('@src/assets/images/profile.png')}
         style={{ ...baseStyle, flex: 1 }}
         resizeMode="cover"
       />

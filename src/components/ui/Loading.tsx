@@ -48,7 +48,7 @@ export const Loading = ({ size = 44, strokeWidth = 4 }: LoadingProps) => {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={colors.muted}
+            stroke={colors.default}
             strokeWidth={strokeWidth}
             fill="none"
           />

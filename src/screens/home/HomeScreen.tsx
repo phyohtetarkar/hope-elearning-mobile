@@ -1,12 +1,13 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-import { BottomTabParamList } from '@src/MainTabs';
 import { useAppearance } from '@src/components/appearance';
 import { BlogRecentItem } from '@src/components/blog/BlogRecentItem';
 import { CourseListItem } from '@src/components/course/CourseListItem';
-import { CFText } from '@src/components/ui/CFText';
+import { DefaultStyles } from '@src/components/styles';
 import { Chip } from '@src/components/ui/Chip';
 import { Spacer } from '@src/components/ui/Spacer';
+import { Text } from '@src/components/ui/Text';
+import { BottomTabParamList } from '@src/navigations';
 import { SearchIcon } from 'lucide-react-native';
 import type { PropsWithChildren } from 'react';
 import React, { useEffect } from 'react';
@@ -35,24 +36,24 @@ const Heading = ({ title, seeAll }: HeadingProps) => {
   return (
     <View style={styles.headingContainer}>
       <View style={{ flex: 1 }}>
-        <CFText
+        <Text
           numberOfLines={1}
           style={{
             ...styles.headingTitle,
             color: colors.text,
           }}>
           {title}
-        </CFText>
+        </Text>
       </View>
       {seeAll && (
         <TouchableOpacity activeOpacity={0.5} onPress={seeAll}>
-          <CFText
+          <Text
             style={{
               color: colors.primary,
-              fontWeight: '500',
+              ...DefaultStyles.fonts.medium,
             }}>
             See all
-          </CFText>
+          </Text>
         </TouchableOpacity>
       )}
     </View>
@@ -119,25 +120,25 @@ const HomeScreen = () => {
         />
       }>
       <View style={[themeStyle, styles.container]}>
-        <CFText
+        <Text
           style={{
             ...styles.searchTitle,
             color: colors.text,
           }}>
           What do you want to learn?
-        </CFText>
+        </Text>
 
         <Spacer orientation="vertical" spacing={10} />
 
         <View
           style={{
             ...styles.searchContainer,
-            backgroundColor: colors.muted,
+            backgroundColor: colors.default,
           }}>
-          <SearchIcon color={'gray'} />
+          <SearchIcon color={'dimgray'} />
           <TextInput
             style={{ ...styles.searchInput }}
-            placeholderTextColor={'#aaa'}
+            placeholderTextColor={'dimgray'}
             placeholder="Browse courses..."
             readOnly
           />
@@ -209,11 +210,11 @@ const styles = StyleSheet.create({
   },
   headingTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    ...DefaultStyles.fonts.semiBold,
   },
   searchTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    ...DefaultStyles.fonts.semiBold,
   },
   searchContainer: {
     flexDirection: 'row',

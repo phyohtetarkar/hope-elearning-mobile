@@ -1,13 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '@src/MainNavigation';
-import { formatRelativeTimestamp } from '@src/common/utils';
 import { useAppearance } from '@src/components/appearance';
-import { BaseStyles } from '@src/components/styles';
+import { DefaultStyles } from '@src/components/styles';
 import { Avatar } from '@src/components/ui/Avatar';
-import { CFText } from '@src/components/ui/CFText';
 import { Chip } from '@src/components/ui/Chip';
+import { Divider } from '@src/components/ui/Divider';
 import { Spacer } from '@src/components/ui/Spacer';
+import { Text } from '@src/components/ui/Text';
+import { formatRelativeTimestamp } from '@src/lib/utils';
+import { RootStackParamList } from '@src/navigations';
 import { useRef, useState } from 'react';
 import {
   Image,
@@ -29,16 +30,17 @@ const BlogDetailScreen = () => {
 
   const [coverRatio, setCoverRatio] = useState(1);
 
-  const avatarSize = 48;
+  const avatarSize = 50;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Divider orientation="horizontal" stroke={0.5} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="automatic"
         stickyHeaderIndices={[1]}
         onScroll={evt => {
-          const limit = 50;
+          const limit = 100;
           const ne = evt.nativeEvent;
           const offset = ne.contentOffset.y;
           const end = ne.contentSize.height - ne.layoutMeasurement.height;
@@ -60,13 +62,11 @@ const BlogDetailScreen = () => {
           }
         }}>
         <View style={styles.container}>
-          <CFText style={{ ...styles.title }}>NoSQL data modeling</CFText>
+          <Text style={{ ...styles.title }}>NoSQL data modeling</Text>
 
           <Spacer orientation="vertical" spacing={4} />
 
-          <CFText style={{ ...styles.minRead, color: 'gray' }}>
-            5 min read
-          </CFText>
+          <Text style={{ ...styles.minRead, color: 'gray' }}>5 min read</Text>
 
           <Spacer orientation="vertical" spacing={24} />
 
@@ -95,19 +95,21 @@ const BlogDetailScreen = () => {
               })}
             </View>
 
-            <View style={{ paddingVertical: 8, gap: 2 }}>
-              <CFText style={{}}>By Cartoon, Believe</CFText>
-              <CFText style={{ color: 'gray' }}>
+            <View style={{ paddingVertical: 4, gap: 2 }}>
+              <Text style={{ ...DefaultStyles.fonts.medium }}>
+                By Cartoon, Believe
+              </Text>
+              <Text style={{ ...DefaultStyles.fonts.regular, color: 'gray' }}>
                 {formatRelativeTimestamp('2024-08-26')}
-              </CFText>
+              </Text>
             </View>
           </View>
 
-          <Spacer orientation="vertical" spacing={10} />
+          <Spacer orientation="vertical" spacing={16} />
 
           <View style={styles.coverContainer}>
             <Image
-              source={require('@src/common/nosql.png')}
+              source={require('@src/assets/images/nosql.png')}
               style={{
                 ...styles.cover,
                 borderColor: colors.border,
@@ -146,20 +148,22 @@ const styles = StyleSheet.create({
   },
   cover: {
     flex: 1,
-    borderRadius: BaseStyles.values.borderRadius,
+    borderRadius: DefaultStyles.values.borderRadius,
     borderWidth: 0.7,
   },
   title: {
     fontSize: 20,
-    fontWeight: '600',
     textAlign: 'center',
+    ...DefaultStyles.fonts.semiBold,
   },
   minRead: {
     textAlign: 'center',
+    ...DefaultStyles.fonts.regular,
   },
   headingContainer: {
     flexDirection: 'row',
     gap: 10,
+    alignItems: "center",
   },
   tagContainer: {
     flexDirection: 'row',

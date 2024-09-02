@@ -1,14 +1,12 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@src/navigations';
 import { ChartNoAxesColumnIncreasingIcon, StarIcon } from 'lucide-react-native';
-import {
-  Image,
-  StyleSheet,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useAppearance } from '../appearance';
-import { BaseStyles } from '../styles';
+import { DefaultStyles } from '../styles';
 import { Spacer } from '../ui/Spacer';
-import { CFText } from '../ui/CFText';
+import { Text } from '../ui/Text';
 
 interface CourseListItemProps {}
 
@@ -17,11 +15,16 @@ export const CourseListItem = ({}: CourseListItemProps) => {
     theme: { colors },
   } = useAppearance();
 
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   return (
     <TouchableHighlight
       style={{ borderRadius: styles.container.borderRadius }}
       underlayColor={colors.highlight}
-      onPress={() => {}}>
+      onPress={() => {
+        navigation.navigate('CourseDetail');
+      }}>
       <View
         style={{
           ...styles.container,
@@ -29,31 +32,29 @@ export const CourseListItem = ({}: CourseListItemProps) => {
           backgroundColor: colors.card,
         }}>
         <Image
-          source={require('@src/common/course.jpg')}
+          source={require('@src/assets/images/course.jpg')}
           style={styles.cover}
           resizeMode="cover"
         />
         <View style={styles.infoContainer}>
-          <CFText style={{ ...styles.categoryText, color: colors.primary }}>
+          <Text style={{ ...styles.categoryText, color: colors.primary }}>
             Programming
-          </CFText>
+          </Text>
           <Spacer orientation="vertical" spacing={4} />
-          <CFText
-            numberOfLines={1}
-            style={{ ...styles.courseTitle }}>
-            Introduction to Java
-          </CFText>
+          <Text numberOfLines={1} style={{ ...styles.courseTitle }}>
+            Introduction to NestJS
+          </Text>
 
           <View style={{ flex: 1, flexDirection: 'column' }} />
 
           <View style={styles.footerContainer}>
             <View style={styles.footerItem}>
               <StarIcon color="#ffb703" fill="#ffb703" size={16} />
-              <CFText style={styles.footerText}>4.5</CFText>
+              <Text style={styles.footerText}>4.5</Text>
             </View>
             <View style={styles.footerItem}>
               <ChartNoAxesColumnIncreasingIcon color="gray" size={16} />
-              <CFText style={styles.footerText}>Beginner</CFText>
+              <Text style={styles.footerText}>Beginner</Text>
             </View>
           </View>
         </View>
@@ -68,12 +69,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 8,
     gap: 10,
-    borderRadius: BaseStyles.values.borderRadius,
+    borderRadius: DefaultStyles.values.borderRadius,
     borderWidth: 0.7,
   },
   cover: {
     aspectRatio: 4 / 3,
-    borderRadius: BaseStyles.values.borderRadius,
+    borderRadius: DefaultStyles.values.borderRadius,
     width: 120,
   },
   infoContainer: {
@@ -82,12 +83,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   courseTitle: {
-    fontWeight: '600',
     fontSize: 16,
+    ...DefaultStyles.fonts.semiBold,
   },
   categoryText: {
-    fontWeight: '500',
     fontSize: 12,
+    ...DefaultStyles.fonts.medium,
   },
   footerContainer: {
     flexDirection: 'row',
@@ -102,5 +103,6 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 14,
     color: 'gray',
+    ...DefaultStyles.fonts.regular,
   },
 });

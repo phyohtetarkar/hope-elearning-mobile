@@ -10,11 +10,11 @@ interface CustomStatusBarProps {
 export const CustomStatusBar = ({ style }: CustomStatusBarProps) => {
   const isFocused = useIsFocused();
   const {
-    theme: { dark },
+    theme: { dark, colors },
   } = useAppearance();
 
   const backgroundStyle = {
-    backgroundColor: dark ? Colors.darker : Colors.lighter,
+    backgroundColor: dark ? "transparent" : Colors.lighter,
   };
 
   if (!isFocused) {
@@ -26,7 +26,7 @@ export const CustomStatusBar = ({ style }: CustomStatusBarProps) => {
       <StatusBar
         barStyle={'light-content'}
         backgroundColor={Colors.darker}
-        translucent={false}
+        translucent={true}
       />
     );
   }
@@ -45,7 +45,7 @@ export const CustomStatusBar = ({ style }: CustomStatusBarProps) => {
     <StatusBar
       barStyle={dark ? 'light-content' : 'dark-content'}
       backgroundColor={backgroundStyle.backgroundColor}
-      translucent={dark}
+      translucent={true}
     />
   );
 };

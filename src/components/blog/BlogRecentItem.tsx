@@ -1,14 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '@src/MainNavigation';
-import { formatRelativeTimestamp, wordPerMinute } from '@src/common/utils';
+import { formatRelativeTimestamp, wordPerMinute } from '@src/lib/utils';
+import { RootStackParamList } from '@src/navigations';
 import { CalendarDaysIcon, EyeIcon } from 'lucide-react-native';
 import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { useAppearance } from '../appearance';
-import { BaseStyles } from '../styles';
-import { CFText } from '../ui/CFText';
+import { DefaultStyles } from '../styles';
 import { Divider } from '../ui/Divider';
 import { Spacer } from '../ui/Spacer';
+import { Text } from '../ui/Text';
 
 interface BlogRecentItemProps {}
 
@@ -35,26 +35,24 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
         }}>
         <View style={styles.cover}>
           <Image
-            source={require('@src/common/course.jpg')}
+            source={require('@src/assets/images/nosql.png')}
             style={styles.cover}
             resizeMode="cover"
           />
         </View>
 
-        <Divider orientation="horizontal" />
+        <Divider orientation="horizontal" stroke={0.7} />
 
         <View style={styles.infoContainer}>
-          <CFText
-            numberOfLines={1}
-            style={{ ...styles.title }}>
+          <Text numberOfLines={1} style={{ ...styles.title }}>
             NoSQL data modeling
-          </CFText>
+          </Text>
 
           <Spacer orientation="vertical" spacing={8} />
 
-          <CFText numberOfLines={1} style={{ ...styles.wpmText }}>
+          <Text numberOfLines={1} style={{ ...styles.wpmText }}>
             {wordPerMinute(150)} min read
-          </CFText>
+          </Text>
 
           <Spacer orientation="vertical" spacing={16} />
 
@@ -65,16 +63,16 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
           <View style={{ ...styles.footerContainer }}>
             <View style={styles.footerItem}>
               <CalendarDaysIcon color="gray" size={14} />
-              <CFText style={styles.footerText}>
+              <Text style={styles.footerText}>
                 {formatRelativeTimestamp('2024-08-26')}
-              </CFText>
+              </Text>
             </View>
 
             <View style={{ flex: 1 }} />
 
             <View style={styles.footerItem}>
               <EyeIcon color="gray" size={14} />
-              <CFText style={styles.footerText}>1k</CFText>
+              <Text style={styles.footerText}>1k</Text>
             </View>
           </View>
         </View>
@@ -86,7 +84,7 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: BaseStyles.values.borderRadius,
+    borderRadius: DefaultStyles.values.borderRadius,
     borderWidth: 0.7,
     overflow: 'hidden',
   },
@@ -101,12 +99,13 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    fontWeight: '600',
     fontSize: 16,
+    ...DefaultStyles.fonts.semiBold,
   },
   wpmText: {
     fontSize: 14,
     color: 'gray',
+    ...DefaultStyles.fonts.regular,
   },
   footerContainer: {
     flexDirection: 'row',
@@ -120,5 +119,6 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 14,
     color: 'gray',
+    ...DefaultStyles.fonts.regular,
   },
 });

@@ -42,17 +42,22 @@ export function formatRelativeTimestamp(
 
   const date = dayjs(timestamp);
 
-  const diff = dayjs().diff(date, 'day', false);
+  const now = dayjs();
+
+  const diff = now.diff(date, 'day', false);
 
   if (diff < 7) {
     return date.fromNow();
   }
 
+  const df = 'MMM DD, YYYY';
+  // const df = now.isSame(date, 'year') ? 'MMM DD' : 'MMM DD, YYYY';
+
   if (withTime) {
-    return date.format('MMM DD, YYYY hh:mm A');
+    return date.format(`${df} hh:mm A`);
   }
 
-  return date.format('MMM DD, YYYY');
+  return date.format(df);
 }
 
 export function wordPerMinute(wordCount: number) {
