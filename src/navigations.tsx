@@ -2,6 +2,7 @@ export type RootStackParamList = {
   MainTabs: undefined;
   BlogDetail: undefined;
   CourseDetail: undefined;
+  CourseList: undefined;
 };
 
 export type BottomTabParamList = {

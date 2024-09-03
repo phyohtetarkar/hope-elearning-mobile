@@ -11,6 +11,7 @@ import { CustomStatusBar } from './components/ui/CustomStatusBar';
 import { RootStackParamList } from './navigations';
 import BlogDetailScreen from './screens/blog/BlogDetailScreen';
 import CourseDetailScreen from './screens/course/CourseDetailScreen';
+import CourseListScreen from './screens/course/CourseListScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -36,6 +37,7 @@ const MainNavigation = () => {
           headerShadowVisible: false,
           headerTintColor: theme.colors.text,
           navigationBarColor: theme.colors.card,
+          animation: 'slide_from_right',
         }}>
         <Stack.Screen
           name="MainTabs"
@@ -52,7 +54,6 @@ const MainNavigation = () => {
           options={({ route }) => ({
             headerBackTitleVisible: false,
             title: '',
-            animation: 'slide_from_right',
             headerRight: props => {
               return (
                 <Item
@@ -66,12 +67,19 @@ const MainNavigation = () => {
           })}
         />
         <Stack.Screen
+          name="CourseList"
+          component={CourseListScreen}
+          options={({ route }) => ({
+            headerBackTitleVisible: false,
+            title: 'Courses',
+          })}
+        />
+        <Stack.Screen
           name="CourseDetail"
           component={CourseDetailScreen}
           options={({ route }) => ({
             headerBackTitleVisible: false,
             title: '',
-            animation: 'slide_from_right',
             headerRight: props => {
               return (
                 <HeaderButtons left>

@@ -18,6 +18,8 @@ import { HeaderLogo } from './components/ui/HeaderLogo';
 import { BottomTabParamList } from './navigations';
 import BlogListScreen from './screens/blog/BlogListScreen';
 import HomeScreen from './screens/home/HomeScreen';
+import MyCoursesScreen from './screens/learning/MyCoursesScreen';
+import ProfileScreen from './screens/profile/ProfileScreen';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -82,7 +84,7 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name="Learnings"
-        component={HomeScreen}
+        component={MyCoursesScreen}
         options={{
           headerTitle: 'My Courses',
           tabBarIcon: props => {
@@ -95,7 +97,7 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={HomeScreen}
+        component={ProfileScreen}
         options={{
           tabBarIcon: props => {
             if (props.focused) {

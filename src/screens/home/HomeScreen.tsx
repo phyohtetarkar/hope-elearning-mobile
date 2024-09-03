@@ -1,5 +1,6 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAppearance } from '@src/components/appearance';
 import { BlogRecentItem } from '@src/components/blog/BlogRecentItem';
 import { CourseListItem } from '@src/components/course/CourseListItem';
@@ -7,10 +8,10 @@ import { DefaultStyles } from '@src/components/styles';
 import { Chip } from '@src/components/ui/Chip';
 import { Spacer } from '@src/components/ui/Spacer';
 import { Text } from '@src/components/ui/Text';
-import { BottomTabParamList } from '@src/navigations';
+import { BottomTabParamList, RootStackParamList } from '@src/navigations';
 import { SearchIcon } from 'lucide-react-native';
 import type { PropsWithChildren } from 'react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Dimensions,
   FlatList,
@@ -65,7 +66,10 @@ const HomeScreen = () => {
     theme: { dark, colors },
   } = useAppearance();
 
-  const navigation =
+  const rootNavigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const tabNavigation =
     useNavigation<BottomTabNavigationProp<BottomTabParamList>>();
 
   const themeStyle = {
@@ -75,9 +79,9 @@ const HomeScreen = () => {
   const width = Dimensions.get('window').width;
   const categoryItemWidth = (width - 42) / 2;
 
-  useEffect(() => {
-    navigation.setOptions({});
-  }, [navigation]);
+  // useEffect(() => {
+  //   tabNavigation.setOptions({});
+  // }, [tabNavigation]);
 
   const renderCategoryItem = (item: ListRenderItemInfo<number>) => {
     return <Chip title="Programming" onPress={() => {}} />;
@@ -141,6 +145,9 @@ const HomeScreen = () => {
             placeholderTextColor={'dimgray'}
             placeholder="Browse courses..."
             readOnly
+            onPress={() => {
+              rootNavigation.navigate('CourseList');
+            }}
           />
         </View>
 
@@ -158,7 +165,12 @@ const HomeScreen = () => {
 
         <Spacer orientation="vertical" spacing={24} />
 
-        <Heading title="Top courses" seeAll={() => {}} />
+        <Heading
+          title="Top courses"
+          seeAll={() => {
+            rootNavigation.navigate('CourseList');
+          }}
+        />
 
         <Spacer orientation="vertical" spacing={12} />
 
@@ -176,7 +188,7 @@ const HomeScreen = () => {
         <Heading
           title="Recent posts"
           seeAll={() => {
-            navigation.navigate('Blogs');
+            tabNavigation.navigate('Blogs');
           }}
         />
 

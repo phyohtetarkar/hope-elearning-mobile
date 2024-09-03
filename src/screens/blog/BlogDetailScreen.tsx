@@ -4,19 +4,15 @@ import { useAppearance } from '@src/components/appearance';
 import { DefaultStyles } from '@src/components/styles';
 import { Avatar } from '@src/components/ui/Avatar';
 import { Chip } from '@src/components/ui/Chip';
+import { CustomWebView } from '@src/components/ui/CustomWebView';
 import { Divider } from '@src/components/ui/Divider';
 import { Spacer } from '@src/components/ui/Spacer';
 import { Text } from '@src/components/ui/Text';
 import { formatRelativeTimestamp } from '@src/lib/utils';
 import { RootStackParamList } from '@src/navigations';
 import { useRef, useState } from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Image, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const BlogDetailScreen = () => {
   const {
@@ -28,17 +24,30 @@ const BlogDetailScreen = () => {
 
   const headerHidden = useRef(false);
 
+  const insets = useSafeAreaInsets();
+
   const [coverRatio, setCoverRatio] = useState(1);
 
   const avatarSize = 50;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <>
       <Divider orientation="horizontal" stroke={0.5} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="automatic"
         stickyHeaderIndices={[1]}
+        contentContainerStyle={{
+          paddingBottom: insets.bottom + 16,
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            colors={[colors.primary]}
+            tintColor={'gray'}
+            onRefresh={() => {}}
+          />
+        }
         onScroll={evt => {
           const limit = 100;
           const ne = evt.nativeEvent;
@@ -123,6 +132,10 @@ const BlogDetailScreen = () => {
             />
           </View>
 
+          <Spacer orientation="vertical" spacing={20} />
+
+          <CustomWebView html="<h2>Hello world</h2>" />
+
           <Spacer orientation="vertical" spacing={16} />
 
           <View style={styles.tagContainer}>
@@ -130,11 +143,9 @@ const BlogDetailScreen = () => {
               return <Chip key={i} title="Database" onPress={() => {}} />;
             })}
           </View>
-
-          <View style={{ height: 1000 }} />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 };
 
@@ -163,7 +174,7 @@ const styles = StyleSheet.create({
   headingContainer: {
     flexDirection: 'row',
     gap: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   tagContainer: {
     flexDirection: 'row',

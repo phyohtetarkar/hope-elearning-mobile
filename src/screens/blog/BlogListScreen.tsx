@@ -1,10 +1,10 @@
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAppearance } from '@src/components/appearance';
 import { BlogListItem } from '@src/components/blog/BlogListItem';
 import { Divider } from '@src/components/ui/Divider';
 import { RootStackParamList } from '@src/navigations';
-import { ListFilterIcon } from 'lucide-react-native';
+import { Settings2Icon } from 'lucide-react-native';
 import React, { useEffect, useRef } from 'react';
 import {
   FlatList,
@@ -23,7 +23,7 @@ const BlogListScreen = () => {
   } = useAppearance();
 
   const navigation =
-    useNavigation<BottomTabNavigationProp<RootStackParamList>>();
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const scrollOffset = useRef(0);
 
@@ -39,7 +39,7 @@ const BlogListScreen = () => {
             <Item
               title="Filter"
               iconName="filter"
-              IconComponent={ListFilterIcon as any}
+              IconComponent={Settings2Icon as any}
               color={props.tintColor}
             />
           </HeaderButtons>

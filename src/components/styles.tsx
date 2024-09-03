@@ -7,7 +7,7 @@ export const DefaultStyles = {
   shadow: {
     ...Platform.select({
       ios: {
-        shadowColor: '#999',
+        shadowColor: '#777',
         shadowOffset: {
           width: 0,
           height: 2,
