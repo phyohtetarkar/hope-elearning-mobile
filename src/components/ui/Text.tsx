@@ -1,12 +1,12 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
 import { forwardRef } from 'react';
 import { Text as NativeText, TextProps } from 'react-native';
-import { useAppearance } from '../appearance';
 
 export const Text = forwardRef<NativeText, TextProps>(
   ({ style, ...props }, ref) => {
-    const {
-      theme: { colors },
-    } = useAppearance();
+    const { colors } = useAppSelector(selectTheme);
+
     return (
       <NativeText
         ref={ref}

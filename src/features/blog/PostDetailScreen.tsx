@@ -1,26 +1,39 @@
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useAppearance } from '@src/components/appearance';
-import { DefaultStyles } from '@src/components/styles';
-import { Avatar } from '@src/components/ui/Avatar';
-import { Chip } from '@src/components/ui/Chip';
-import { CustomWebView } from '@src/components/ui/CustomWebView';
-import { Divider } from '@src/components/ui/Divider';
-import { Spacer } from '@src/components/ui/Spacer';
-import { Text } from '@src/components/ui/Text';
-import { formatRelativeTimestamp } from '@src/lib/utils';
-import { RootStackParamList } from '@src/navigations';
-import { useRef, useState } from 'react';
-import { Image, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { DefaultStyles } from '@/components/styles';
+import { Avatar } from '@/components/ui/Avatar';
+import { Chip } from '@/components/ui/Chip';
+import { CustomWebView } from '@/components/ui/CustomWebView';
+import { Divider } from '@/components/ui/Divider';
+import { ErrorView } from '@/components/ui/ErrorView';
+import { Loading } from '@/components/ui/Loading';
+import { Spacer } from '@/components/ui/Spacer';
+import { Text } from '@/components/ui/Text';
+import { useAppSelector } from '@/lib/hooks';
+import { getPostBySlug } from '@/lib/services/BlogApi';
+import { formatRelativeTimestamp, wordPerMinute } from '@/lib/utils';
+import { RootStackParamList } from '@/navigations';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
+import {
+  Image,
+  InteractionManager,
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { selectTheme } from '../themeSlice';
 
-const BlogDetailScreen = () => {
-  const {
-    theme: { colors },
-  } = useAppearance();
+type Props = NativeStackScreenProps<RootStackParamList, 'BlogDetail'>;
 
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+const avatarSize = 50;
+
+const PostDetailScreen = ({ navigation, route }: Props) => {
+  const { colors } = useAppSelector(selectTheme);
+
+  const { slug } = route.params;
 
   const headerHidden = useRef(false);
 
@@ -28,11 +41,52 @@ const BlogDetailScreen = () => {
 
   const [coverRatio, setCoverRatio] = useState(1);
 
-  const avatarSize = 50;
+  const {
+    data,
+    error,
+    isPending,
+    isFetching,
+    isLoadingError,
+    refetch,
+  } = useQuery({
+    queryKey: ['/content/posts', slug],
+    queryFn: ({ signal }) => getPostBySlug(slug, signal),
+    enabled: false,
+  });
 
-  return (
-    <>
-      <Divider orientation="horizontal" stroke={0.5} />
+  useEffect(() => {
+    const interactionPromise = InteractionManager.runAfterInteractions(() => {
+      isPending && refetch();
+    });
+
+    return () => {
+      interactionPromise.cancel();
+    };
+  }, [refetch, isPending]);
+
+  const content = () => {
+    if (isPending) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <Loading />
+        </SafeAreaView>
+      );
+    }
+
+    if (error && isLoadingError) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <ErrorView
+            error={error}
+            action={() => {
+              refetch();
+            }}
+          />
+        </SafeAreaView>
+      );
+    }
+
+    return (
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="automatic"
@@ -42,10 +96,12 @@ const BlogDetailScreen = () => {
         }}
         refreshControl={
           <RefreshControl
-            refreshing={false}
+            refreshing={isFetching}
             colors={[colors.primary]}
             tintColor={'gray'}
-            onRefresh={() => {}}
+            onRefresh={() => {
+              refetch();
+            }}
           />
         }
         onScroll={evt => {
@@ -60,7 +116,7 @@ const BlogDetailScreen = () => {
 
           if (offset > limit && !headerHidden.current) {
             navigation.setOptions({
-              title: 'NoSQL data modeling',
+              title: data.title ?? '',
             });
             headerHidden.current = true;
           } else if (offset < limit && headerHidden.current) {
@@ -71,11 +127,13 @@ const BlogDetailScreen = () => {
           }
         }}>
         <View style={styles.container}>
-          <Text style={{ ...styles.title }}>NoSQL data modeling</Text>
+          <Text style={{ ...styles.title }}>{data.title}</Text>
 
           <Spacer orientation="vertical" spacing={4} />
 
-          <Text style={{ ...styles.minRead, color: 'gray' }}>5 min read</Text>
+          <Text style={{ ...styles.minRead, color: 'gray' }}>
+            {wordPerMinute(data.wordCount)} min read
+          </Text>
 
           <Spacer orientation="vertical" spacing={24} />
 
@@ -85,7 +143,7 @@ const BlogDetailScreen = () => {
                 flexDirection: 'row',
                 height: avatarSize,
               }}>
-              {[1, 2].map((v, i, ary) => {
+              {data.authors?.map((a, i, ary) => {
                 const len = ary.length;
                 return (
                   <View
@@ -95,6 +153,8 @@ const BlogDetailScreen = () => {
                       zIndex: len - i,
                     }}>
                     <Avatar
+                      src={a.image ? { uri: a.image } : undefined}
+                      name={a.nickname}
                       size={avatarSize}
                       borderWidth={3}
                       borderColor={colors.background}
@@ -106,10 +166,10 @@ const BlogDetailScreen = () => {
 
             <View style={{ paddingVertical: 4, gap: 2 }}>
               <Text style={{ ...DefaultStyles.fonts.medium }}>
-                By Cartoon, Believe
+                By {data.authors?.map(a => a.nickname).join(', ')}
               </Text>
               <Text style={{ ...DefaultStyles.fonts.regular, color: 'gray' }}>
-                {formatRelativeTimestamp('2024-08-26')}
+                {formatRelativeTimestamp(data.publishedAt)}
               </Text>
             </View>
           </View>
@@ -118,7 +178,11 @@ const BlogDetailScreen = () => {
 
           <View style={styles.coverContainer}>
             <Image
-              source={require('@src/assets/images/nosql.png')}
+              source={
+                data.cover
+                  ? { uri: data.cover }
+                  : require('@/assets/images/placeholder.jpg')
+              }
               style={{
                 ...styles.cover,
                 borderColor: colors.border,
@@ -139,12 +203,19 @@ const BlogDetailScreen = () => {
           <Spacer orientation="vertical" spacing={16} />
 
           <View style={styles.tagContainer}>
-            {[1, 2].map((v, i) => {
-              return <Chip key={i} title="Database" onPress={() => {}} />;
+            {data.tags?.map((tag, i) => {
+              return <Chip key={i} title={tag.name} onPress={() => {}} />;
             })}
           </View>
         </View>
       </ScrollView>
+    );
+  };
+
+  return (
+    <>
+      <Divider orientation="horizontal" stroke={0.5} />
+      {content()}
     </>
   );
 };
@@ -153,6 +224,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    justifyContent: 'center',
   },
   coverContainer: {
     flexDirection: 'row',
@@ -183,4 +255,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BlogDetailScreen;
+export default PostDetailScreen;

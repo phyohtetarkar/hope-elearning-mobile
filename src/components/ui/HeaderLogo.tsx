@@ -1,11 +1,11 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
 import { HeaderTitleProps } from '@react-navigation/elements';
 import { StyleSheet, Text, View } from 'react-native';
-import { useAppearance } from '../appearance';
 
 export const HeaderLogo = (props: HeaderTitleProps) => {
-  const {
-    theme: { dark, colors },
-  } = useAppearance();
+  const { colors } = useAppSelector(selectTheme);
+
   return (
     <View style={styles.container}>
       {/* <View

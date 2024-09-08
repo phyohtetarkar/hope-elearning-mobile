@@ -1,5 +1,7 @@
 import { Platform, TextStyle } from 'react-native';
 
+type TextFontStyle = Pick<TextStyle, 'fontFamily' | 'fontWeight'>;
+
 export const DefaultStyles = {
   values: {
     borderRadius: 3,
@@ -21,7 +23,7 @@ export const DefaultStyles = {
     }),
   },
   fonts: {
-    regular: Platform.select<TextStyle>({
+    regular: Platform.select<TextFontStyle>({
       ios: {
         fontWeight: '400',
         fontFamily: 'Roboto',
@@ -30,7 +32,7 @@ export const DefaultStyles = {
         fontFamily: 'Roboto-Regular',
       },
     }),
-    medium: Platform.select<TextStyle>({
+    medium: Platform.select<TextFontStyle>({
       ios: {
         fontWeight: '500',
         fontFamily: 'Roboto',
@@ -39,18 +41,18 @@ export const DefaultStyles = {
         fontFamily: 'Roboto-Medium',
       },
     }),
-    semiBold: Platform.select<TextStyle>({
+    semiBold: Platform.select<TextFontStyle>({
       ios: {
-        fontWeight: '600',
+        fontWeight: '700',
         fontFamily: 'Roboto',
       },
       android: {
         fontFamily: 'Roboto-Bold',
       },
     }),
-    bold: Platform.select<TextStyle>({
+    bold: Platform.select<TextFontStyle>({
       ios: {
-        fontWeight: '700',
+        fontWeight: '900',
         fontFamily: 'Roboto',
       },
       android: {

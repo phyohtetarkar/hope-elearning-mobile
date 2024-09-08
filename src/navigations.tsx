@@ -1,7 +1,7 @@
 export type RootStackParamList = {
   MainTabs: undefined;
-  BlogDetail: undefined;
-  CourseDetail: undefined;
+  BlogDetail: { slug: string };
+  CourseDetail: { slug: string };
   CourseList: undefined;
 };
 

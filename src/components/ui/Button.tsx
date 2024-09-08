@@ -1,6 +1,7 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
 import { PropsWithChildren, useMemo } from 'react';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
-import { useAppearance } from '../appearance';
 import { DefaultStyles } from '../styles';
 import { Text } from './Text';
 
@@ -18,9 +19,7 @@ export const Button = ({
   onPress,
   children,
 }: PropsWithChildren<ButtonProps>) => {
-  const {
-    theme: { colors },
-  } = useAppearance();
+  const { colors } = useAppSelector(selectTheme);
 
   const { backgroundColor } = useMemo(() => {
     if (variant === 'primary') {
@@ -55,9 +54,7 @@ export const TextButton = ({
   onPress,
   variant = 'primary',
 }: TextButtonProps) => {
-  const {
-    theme: { colors },
-  } = useAppearance();
+  const { colors } = useAppSelector(selectTheme);
 
   const { color } = useMemo(() => {
     if (variant === 'primary') {

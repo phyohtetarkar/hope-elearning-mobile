@@ -1,15 +1,14 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
 import { useState } from 'react';
 import WebView from 'react-native-webview';
-import { useAppearance } from '../appearance';
 
 interface CustomWebViewProps {
   html?: string;
 }
 
 export const CustomWebView = ({ html }: CustomWebViewProps) => {
-  const {
-    theme: { dark, colors },
-  } = useAppearance();
+  const { colors } = useAppSelector(selectTheme);
 
   const [webViewHeight, setWebViewHeight] = useState<number>();
   const injectedJavaScript = `
@@ -63,6 +62,7 @@ export const CustomWebView = ({ html }: CustomWebViewProps) => {
       source={{ html: htmlWrapper, baseUrl: '' }}
       scrollEnabled={false}
       overScrollMode="never"
+      showsVerticalScrollIndicator={false}
       style={{
         height: webViewHeight,
         backgroundColor: 'transparent',

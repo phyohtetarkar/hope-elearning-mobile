@@ -1,81 +1,80 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
+import { Post } from '@/lib/models';
+import {
+  formatAbbreviate,
+  formatRelativeTimestamp,
+  wordPerMinute,
+} from '@/lib/utils';
+import { RootStackParamList } from '@/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { formatRelativeTimestamp, wordPerMinute } from '@src/lib/utils';
-import { RootStackParamList } from '@src/navigations';
 import { CalendarDaysIcon, EyeIcon } from 'lucide-react-native';
 import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
-import { useAppearance } from '../appearance';
 import { DefaultStyles } from '../styles';
-import { Divider } from '../ui/Divider';
 import { Spacer } from '../ui/Spacer';
 import { Text } from '../ui/Text';
 
-interface BlogRecentItemProps {}
+interface PostListItemProps {
+  value: Post;
+}
 
-export const BlogRecentItem = ({}: BlogRecentItemProps) => {
-  const {
-    theme: { colors },
-  } = useAppearance();
+export const PostListItem = ({ value }: PostListItemProps) => {
+  const { colors } = useAppSelector(selectTheme);
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
     <TouchableHighlight
-      style={{ borderRadius: styles.container.borderRadius }}
       underlayColor={colors.highlight}
       onPress={() => {
-        navigation.navigate('BlogDetail');
+        navigation.navigate('BlogDetail', { slug: value.slug });
       }}>
       <View
         style={{
           ...styles.container,
-          borderColor: colors.border,
-          backgroundColor: colors.card,
+          backgroundColor: colors.background,
         }}>
-        <View style={styles.cover}>
-          <Image
-            source={require('@src/assets/images/nosql.png')}
-            style={styles.cover}
-            resizeMode="cover"
-          />
-        </View>
-
-        <Divider orientation="horizontal" stroke={0.7} />
-
         <View style={styles.infoContainer}>
-          <Text numberOfLines={1} style={{ ...styles.title }}>
-            NoSQL data modeling
+          <Text numberOfLines={2} style={{ ...styles.title }}>
+            {value.title ?? ''}
           </Text>
 
-          <Spacer orientation="vertical" spacing={8} />
+          <Spacer orientation="vertical" spacing={6} />
 
           <Text numberOfLines={1} style={{ ...styles.wpmText }}>
-            {wordPerMinute(150)} min read
+            {wordPerMinute(value.wordCount)} min read
           </Text>
 
-          <Spacer orientation="vertical" spacing={16} />
+          <Spacer orientation="vertical" spacing={20} />
 
-          <Divider orientation="horizontal" stroke={0.7} />
-
-          <Spacer orientation="vertical" spacing={16} />
-
-          <View style={{ ...styles.footerContainer }}>
+          <View style={styles.footerContainer}>
             <View style={styles.footerItem}>
               <CalendarDaysIcon color="gray" size={14} />
               <Text style={styles.footerText}>
-                {formatRelativeTimestamp('2024-08-26')}
+                {formatRelativeTimestamp(value.publishedAt)}
               </Text>
             </View>
 
-            <View style={{ flex: 1 }} />
-
             <View style={styles.footerItem}>
               <EyeIcon color="gray" size={14} />
-              <Text style={styles.footerText}>1k</Text>
+              <Text style={styles.footerText}>
+                {formatAbbreviate(Number(value.meta?.viewCount ?? 0))}
+              </Text>
             </View>
           </View>
         </View>
+
+        <Image
+          source={
+            value.cover
+              ? { uri: value.cover }
+              : require('@/assets/images/placeholder.jpg')
+          }
+          style={{ ...styles.cover, backgroundColor: colors.default }}
+          resizeMode="cover"
+        />
       </View>
     </TouchableHighlight>
   );
@@ -84,19 +83,21 @@ export const BlogRecentItem = ({}: BlogRecentItemProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: DefaultStyles.values.borderRadius,
-    borderWidth: 0.7,
     overflow: 'hidden',
+    flexDirection: 'row',
+    gap: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
   },
   cover: {
-    flex: 1,
-    aspectRatio: 16 / 9,
-    width: 300,
+    aspectRatio: 3 / 2,
+    overflow: 'hidden',
+    width: 90,
+    borderRadius: DefaultStyles.values.borderRadius,
   },
   infoContainer: {
     flex: 1,
     overflow: 'hidden',
-    padding: 16,
   },
   title: {
     fontSize: 16,
@@ -108,8 +109,10 @@ const styles = StyleSheet.create({
     ...DefaultStyles.fonts.regular,
   },
   footerContainer: {
+    flex: 1,
     flexDirection: 'row',
-    gap: 10,
+    gap: 14,
+    alignItems: 'center',
   },
   footerItem: {
     flexDirection: 'row',

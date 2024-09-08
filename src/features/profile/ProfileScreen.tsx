@@ -1,4 +1,4 @@
-import { Divider } from '@src/components/ui/Divider';
+import { Divider } from '@/components/ui/Divider';
 import { ScrollView, StyleSheet } from 'react-native';
 
 const ProfileScreen = () => {

@@ -1,7 +1,8 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
 import { useEffect, useRef } from 'react';
 import { Animated, Easing, StyleSheet, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import { useAppearance } from '../appearance';
 
 interface LoadingProps {
   size?: number;
@@ -9,9 +10,8 @@ interface LoadingProps {
 }
 
 export const Loading = ({ size = 44, strokeWidth = 4 }: LoadingProps) => {
-  const {
-    theme: { dark, colors },
-  } = useAppearance();
+  const { colors } = useAppSelector(selectTheme);
+
   const spinValue = useRef(new Animated.Value(0)).current;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -59,8 +59,8 @@ export const Loading = ({ size = 44, strokeWidth = 4 }: LoadingProps) => {
             stroke={colors.primary}
             strokeWidth={strokeWidth}
             fill="none"
-            strokeDasharray={`${circumference * 0.3} ${circumference}`}
-            strokeDashoffset={circumference * 0.7}
+            strokeDasharray={`${circumference * 0.4} ${circumference}`}
+            strokeDashoffset={circumference}
           />
         </Svg>
       </Animated.View>
@@ -72,5 +72,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 16,
   },
 });

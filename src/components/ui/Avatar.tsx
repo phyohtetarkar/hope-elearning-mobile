@@ -1,8 +1,13 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
+import type { ImageSourcePropType } from 'react-native';
 import { Image, StyleSheet, View } from 'react-native';
-import { useAppearance } from '../appearance';
+import { DefaultStyles } from '../styles';
+import { Text } from './Text';
 
 interface AvatarProps {
-  src?: string;
+  src?: ImageSourcePropType;
+  name?: string;
   size?: number;
   borderWidth?: number;
   borderColor?: string;
@@ -10,13 +15,12 @@ interface AvatarProps {
 
 export const Avatar = ({
   src,
+  name,
   size = 54,
   borderWidth,
   borderColor,
 }: AvatarProps) => {
-  const {
-    theme: { colors },
-  } = useAppearance();
+  const { colors } = useAppSelector(selectTheme);
 
   const baseStyle = {
     width: size,
@@ -28,18 +32,55 @@ export const Avatar = ({
     <View
       style={{
         ...baseStyle,
-        borderWidth: borderWidth ? borderWidth : 0,
+        ...styles.container,
+        borderWidth: borderWidth ?? 0,
         borderColor: borderColor ?? colors.border,
       }}>
-      <Image
-        source={src ?? require('@src/assets/images/profile.png')}
-        style={{ ...baseStyle, flex: 1 }}
-        resizeMode="cover"
-      />
+      {src ? (
+        <Image
+          style={{ ...baseStyle, ...styles.image }}
+          resizeMode="cover"
+          source={src}
+        />
+      ) : (
+        <>
+          <View
+            style={{
+              ...baseStyle,
+              ...styles.nameContainer,
+              backgroundColor: colors.primary,
+            }}>
+            {name && (
+              <Text
+                style={{
+                  ...styles.name,
+                  color: colors.primaryForeground,
+                }}>
+                {name.substring(0, 2).toUpperCase()}
+              </Text>
+            )}
+          </View>
+        </>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    position: 'relative',
+  },
+  image: {
+    flex: 1,
+  },
+  nameContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  name: {
+    fontSize: 14,
+    ...DefaultStyles.fonts.medium,
+    position: 'absolute',
+  },
 });

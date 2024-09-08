@@ -1,6 +1,7 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
 import { StarIcon } from 'lucide-react-native';
 import { StyleSheet, View } from 'react-native';
-import { useAppearance } from '../appearance';
 
 interface RatingProps {
   rating: number;
@@ -9,9 +10,7 @@ interface RatingProps {
 const stars = [1, 2, 3, 4, 5];
 
 export const Rating = ({ rating }: RatingProps) => {
-  const {
-    theme: { dark, colors },
-  } = useAppearance();
+  const { dark } = useAppSelector(selectTheme);
 
   let iconSize = 16;
 

@@ -1,8 +1,9 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
 import { useMemo, type ReactNode } from 'react';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
-import { useAppearance } from '../appearance';
-import { Text } from './Text';
 import { DefaultStyles } from '../styles';
+import { Text } from './Text';
 
 interface ChipProps {
   title: string;
@@ -19,9 +20,7 @@ const Chip = ({
   trailing,
   onPress,
 }: ChipProps) => {
-  const {
-    theme: { colors },
-  } = useAppearance();
+  const { colors } = useAppSelector(selectTheme);
 
   const { color, backgroundColor } = useMemo(() => {
     if (variant === 'primary') {

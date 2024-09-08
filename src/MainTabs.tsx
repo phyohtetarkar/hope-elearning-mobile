@@ -13,21 +13,21 @@ import {
   UserIcon as UserSolidIcon,
 } from 'react-native-heroicons/solid';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useAppearance } from './components/appearance';
 import { HeaderLogo } from './components/ui/HeaderLogo';
+import PostListScreen from './features/blog/PostListScreen';
+import HomeScreen from './features/home/HomeScreen';
+import MyCoursesScreen from './features/learning/MyCoursesScreen';
+import ProfileScreen from './features/profile/ProfileScreen';
+import { selectTheme, setDarkMode, setLightMode } from './features/themeSlice';
+import { useAppDispatch, useAppSelector } from './lib/hooks';
 import { BottomTabParamList } from './navigations';
-import BlogListScreen from './screens/blog/BlogListScreen';
-import HomeScreen from './screens/home/HomeScreen';
-import MyCoursesScreen from './screens/learning/MyCoursesScreen';
-import ProfileScreen from './screens/profile/ProfileScreen';
+import { DefaultStyles } from './components/styles';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const MainTabs = () => {
-  const {
-    theme: { dark, colors },
-    update,
-  } = useAppearance();
+  const dispatch = useAppDispatch();
+  const { dark, colors } = useAppSelector(selectTheme);
 
   return (
     <Tab.Navigator
@@ -36,6 +36,10 @@ const MainTabs = () => {
         tabBarShowLabel: false,
         headerShadowVisible: false,
         headerTintColor: colors.text,
+        headerTitleStyle: {
+          fontSize: 18,
+          ...DefaultStyles.fonts.medium,
+        },
       }}>
       <Tab.Screen
         name="Home"
@@ -63,7 +67,11 @@ const MainTabs = () => {
                 IconComponent={(dark ? MoonIcon : SunIcon) as any}
                 color={props.tintColor}
                 onPress={() => {
-                  update?.(dark ? 'light' : 'dark');
+                  if (dark) {
+                    dispatch(setLightMode());
+                  } else {
+                    dispatch(setDarkMode());
+                  }
                 }}
               />
             </HeaderButtons>
@@ -72,7 +80,7 @@ const MainTabs = () => {
       />
       <Tab.Screen
         name="Blogs"
-        component={BlogListScreen}
+        component={PostListScreen}
         options={{
           tabBarIcon: props => {
             if (props.focused) {

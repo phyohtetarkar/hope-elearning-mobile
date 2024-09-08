@@ -1,23 +1,26 @@
 import { selectTheme } from '@/features/themeSlice';
 import { useAppSelector } from '@/lib/hooks';
-import { Course } from '@/lib/models';
-import { formatAbbreviate, uppercaseFirstChar } from '@/lib/utils';
+import { Post } from '@/lib/models';
+import {
+  formatAbbreviate,
+  formatRelativeTimestamp,
+  wordPerMinute,
+} from '@/lib/utils';
 import { RootStackParamList } from '@/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { CalendarDaysIcon, EyeIcon } from 'lucide-react-native';
 import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { DefaultStyles } from '../styles';
 import { Divider } from '../ui/Divider';
-import { Rating } from '../ui/Rating';
 import { Spacer } from '../ui/Spacer';
 import { Text } from '../ui/Text';
-import { DotIcon } from 'lucide-react-native';
 
-interface CourseGridItemProps {
-  value: Course;
+interface PostRecentItemProps {
+  value: Post;
 }
 
-export const CourseGridItem = ({ value }: CourseGridItemProps) => {
+export const PostRecentItem = ({ value }: PostRecentItemProps) => {
   const { colors } = useAppSelector(selectTheme);
 
   const navigation =
@@ -25,10 +28,10 @@ export const CourseGridItem = ({ value }: CourseGridItemProps) => {
 
   return (
     <TouchableHighlight
-      style={{ borderRadius: styles.container.borderRadius }}
+      style={{ flex: 1, borderRadius: styles.container.borderRadius }}
       underlayColor={colors.highlight}
       onPress={() => {
-        navigation.navigate('CourseDetail', { slug: value.slug });
+        navigation.navigate('BlogDetail', { slug: value.slug });
       }}>
       <View
         style={{
@@ -46,17 +49,6 @@ export const CourseGridItem = ({ value }: CourseGridItemProps) => {
             style={styles.cover}
             resizeMode="cover"
           />
-
-          {/* <View
-            style={[
-              {
-                ...styles.priceContainer,
-                position: 'absolute',
-                backgroundColor: colors.primary,
-              },
-            ]}>
-            <Text style={{ ...styles.price, color: colors.primaryForeground }}>Free</Text>
-          </View> */}
         </View>
 
         <Divider orientation="horizontal" stroke={0.7} />
@@ -68,28 +60,35 @@ export const CourseGridItem = ({ value }: CourseGridItemProps) => {
 
           <Spacer orientation="vertical" spacing={8} />
 
-          <View style={styles.subtitleContainer}>
-            <Text style={{ ...styles.footerText }}>
-              {formatAbbreviate(Number(value.meta?.enrolledCount ?? 0))}
-              &nbsp;Enrolled
-            </Text>
-            <DotIcon color={colors.highlight} />
-            <Text style={{ ...styles.level, color: colors.primary }}>
-              {uppercaseFirstChar(value.level)}
-            </Text>
-          </View>
-        </View>
-
-        <Divider orientation="horizontal" stroke={0.5} />
-
-        <View style={{ ...styles.footerContainer }}>
-          <Rating rating={Number(value.meta?.rating ?? 0)} />
-
-          <View style={{ flex: 1 }} />
-
-          <Text style={{ ...styles.footerText, ...DefaultStyles.fonts.medium }}>
-            {uppercaseFirstChar(value.access)}
+          <Text numberOfLines={1} style={{ ...styles.wpmText }}>
+            {wordPerMinute(value.wordCount)} min read
           </Text>
+
+          <Spacer orientation="vertical" spacing={16} />
+
+          <View style={{ flex: 1, flexGrow: 1 }} />
+
+          <Divider orientation="horizontal" stroke={0.7} />
+
+          <Spacer orientation="vertical" spacing={16} />
+
+          <View style={{ ...styles.footerContainer }}>
+            <View style={styles.footerItem}>
+              <CalendarDaysIcon color="gray" size={14} />
+              <Text style={styles.footerText}>
+                {formatRelativeTimestamp(value.publishedAt)}
+              </Text>
+            </View>
+
+            <View style={{ flex: 1 }} />
+
+            <View style={styles.footerItem}>
+              <EyeIcon color="gray" size={14} />
+              <Text style={styles.footerText}>
+                {formatAbbreviate(Number(value.meta?.viewCount ?? 0))}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </TouchableHighlight>
@@ -102,9 +101,9 @@ const styles = StyleSheet.create({
     borderRadius: DefaultStyles.values.borderRadius,
     borderWidth: 0.7,
     overflow: 'hidden',
+    width: 300,
   },
   cover: {
-    flex: 1,
     aspectRatio: 16 / 9,
   },
   infoContainer: {
@@ -112,23 +111,18 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 16,
   },
-  subtitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   title: {
     fontSize: 16,
     ...DefaultStyles.fonts.semiBold,
   },
-  level: {
+  wpmText: {
     fontSize: 14,
+    color: 'gray',
     ...DefaultStyles.fonts.regular,
   },
   footerContainer: {
     flexDirection: 'row',
     gap: 10,
-    alignItems: 'center',
-    padding: 16,
   },
   footerItem: {
     flexDirection: 'row',

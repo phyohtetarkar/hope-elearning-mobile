@@ -1,5 +1,6 @@
+import { selectTheme } from '@/features/themeSlice';
+import { useAppSelector } from '@/lib/hooks';
 import { View } from 'react-native';
-import { useAppearance } from '../appearance';
 
 interface DividerProps {
   orientation: 'vertical' | 'horizontal';
@@ -7,9 +8,7 @@ interface DividerProps {
 }
 
 const Divider = ({ orientation, stroke = 1 }: DividerProps) => {
-  const {
-    theme: { colors },
-  } = useAppearance();
+  const { colors } = useAppSelector(selectTheme);
 
   if (orientation === 'vertical') {
     return (
@@ -31,4 +30,8 @@ const Divider = ({ orientation, stroke = 1 }: DividerProps) => {
   );
 };
 
-export { Divider };
+const ListDivider = () => {
+  return <Divider orientation="horizontal" stroke={0.8} />;
+};
+
+export { Divider, ListDivider };

@@ -1,10 +1,11 @@
 import type { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
 import { Header, getDefaultHeaderHeight } from '@react-navigation/elements';
-import { useAppearance } from '@src/components/appearance';
-import { Chip } from '@src/components/ui/Chip';
+import { Chip } from '@/components/ui/Chip';
 import { useEffect, useRef } from 'react';
 import { Animated, FlatList, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { selectTheme } from '../themeSlice';
+import { useAppSelector } from '@/lib/hooks';
 
 interface BlogListScreenHeaderProps {
   headerProps: BottomTabHeaderProps;
@@ -19,9 +20,7 @@ const BlogListScreenHeader = ({ headerProps }: BlogListScreenHeaderProps) => {
     insets.top,
   );
 
-  const {
-    theme: { dark, colors },
-  } = useAppearance();
+  const { dark, colors } = useAppSelector(selectTheme);
 
   const marginTop = useRef(new Animated.Value(0)).current;
 
