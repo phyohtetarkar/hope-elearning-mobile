@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Lexend-Bold.ttf",
+      "sha1": "1a8d4599190b5057c425db5709a40c7ef03b1202"
+    },
+    {
+      "path": "src/assets/fonts/Lexend-ExtraBold.ttf",
+      "sha1": "dcf210f141cd92d000caaf21be70e2f112fb62c7"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Black.ttf",
+      "sha1": "77f9fac05293485120799e83c16225a1af961f25"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Bold.ttf",
+      "sha1": "1e8baa650d943f2b78f1b77dbfe3ba1fb590e21a"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Light.ttf",
+      "sha1": "02970068cbc5b4daf5b530e994a5b6f547d03bc1"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Medium.ttf",
+      "sha1": "0ee6b0bd5ff6fe30e4ef720a08e38656dc60985f"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Regular.ttf",
+      "sha1": "ce57fc6c6705cb20661ac325fac5d4598b6efbca"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Thin.ttf",
+      "sha1": "07ade56a94bbca87948ce7878a0b14a1df9bb87a"
+    }
+  ]
+}
