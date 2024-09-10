@@ -1,53 +1,27 @@
 import { CourseGridItem } from '@/components/course/CourseGridItem';
-import { DefaultStyles } from '@/components/styles';
 import { Divider } from '@/components/ui/Divider';
 import { ErrorView } from '@/components/ui/ErrorView';
 import { Loading } from '@/components/ui/Loading';
 import { Spacer } from '@/components/ui/Spacer';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppSelector, useResetInfiniteQuery } from '@/lib/hooks';
 import { Course, Page } from '@/lib/models';
 import { getCourses } from '@/lib/services/CourseApi';
 import { RootStackParamList } from '@/navigations';
-import {
-  getDefaultHeaderHeight,
-  HeaderButtonProps,
-} from '@react-navigation/elements';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useEffect } from 'react';
 import {
-  InfiniteData,
-  useInfiniteQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { Settings2Icon } from 'lucide-react-native';
-import React, { useEffect, useRef } from 'react';
-import {
-  Dimensions,
   FlatList,
   InteractionManager,
   ListRenderItemInfo,
-  Platform,
   RefreshControl,
   StyleSheet,
-  TextInput,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Item } from 'react-navigation-header-buttons';
+import Toast from 'react-native-toast-message';
 import { selectTheme } from '../themeSlice';
-
-const screen = Dimensions.get('window');
-
-const FilterButton = (props: HeaderButtonProps) => {
-  return (
-    <Item
-      title="Filter"
-      iconName="filter"
-      IconComponent={Settings2Icon as any}
-      color={props.tintColor}
-    />
-  );
-};
 
 const CourseListScreen = () => {
   const { colors } = useAppSelector(selectTheme);
@@ -83,69 +57,18 @@ const CourseListScreen = () => {
     },
   });
 
-  const resetInfiniteQueryPagination = () => {
-    const queryKey = ['/content/courses'];
-    queryClient.setQueryData<InfiniteData<Page<Course>>>(queryKey, oldData => {
-      if (!oldData) {
-        return undefined;
-      }
-
-      return {
-        pages: oldData.pages.slice(0, 1),
-        pageParams: oldData.pageParams.slice(0, 1),
-      };
-    });
-  };
+  const { resetQuery } = useResetInfiniteQuery<Page<Course>>([
+    '/content/courses',
+  ]);
 
   const insets = useSafeAreaInsets();
 
-  const headerHeight = getDefaultHeaderHeight(screen, false, 0);
-
-  const searchInsets = Platform.select({
-    ios: {
-      height: 8,
-      width: 100,
-    },
-    android: {
-      height: 12,
-      width: 128,
-    },
-    default: {
-      height: 0,
-      width: 0,
-    },
-  });
-
-  const searchHeight = headerHeight - searchInsets.height;
-  const searchWidth = screen.width - searchInsets.width;
-
-  const scrollOffset = useRef(0);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: props => {
-        return (
-          <View
-            style={{
-              ...styles.searchContainer,
-              height: searchHeight,
-              width: searchWidth,
-              borderRadius: searchHeight / 2,
-            }}>
-            <TextInput
-              style={{ ...styles.searchInput, color: colors.text }}
-              placeholderTextColor={'dimgray'}
-              placeholder="Search courses..."
-              selectionColor={colors.primary}
-              cursorColor={colors.primary}
-              autoCorrect={false}
-            />
-          </View>
-        );
-      },
-      headerRight: FilterButton,
-    });
-  }, [navigation, colors, searchWidth, searchHeight]);
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerTitle: CourseListHeaderTitle,
+  //     headerRight: CourseListHeaderRight,
+  //   });
+  // }, [navigation]);
 
   useEffect(() => {
     const interactionPromise = InteractionManager.runAfterInteractions(() => {
@@ -192,7 +115,7 @@ const CourseListScreen = () => {
             colors={[colors.primary]}
             tintColor={'gray'}
             onRefresh={() => {
-              resetInfiniteQueryPagination();
+              resetQuery();
               refetch();
             }}
           />
@@ -247,14 +170,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-  },
-  searchContainer: {
-    paddingHorizontal: 16,
-    backgroundColor: 'rgba(150, 150, 150, 0.15)',
-  },
-  searchInput: {
-    flex: 1,
-    ...DefaultStyles.fonts.regular,
   },
 });
 

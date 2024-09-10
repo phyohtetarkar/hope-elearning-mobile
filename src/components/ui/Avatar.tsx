@@ -1,8 +1,9 @@
 import { selectTheme } from '@/features/themeSlice';
 import { useAppSelector } from '@/lib/hooks';
 import type { ImageSourcePropType } from 'react-native';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { DefaultStyles } from '../styles';
+import { CustomImage } from './CustomImage';
 import { Text } from './Text';
 
 interface AvatarProps {
@@ -37,8 +38,12 @@ export const Avatar = ({
         borderColor: borderColor ?? colors.border,
       }}>
       {src ? (
-        <Image
-          style={{ ...baseStyle, ...styles.image }}
+        <CustomImage
+          style={{
+            ...baseStyle,
+            ...styles.image,
+            backgroundColor: colors.background,
+          }}
           resizeMode="cover"
           source={src}
         />

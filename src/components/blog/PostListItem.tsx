@@ -10,8 +10,9 @@ import { RootStackParamList } from '@/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CalendarDaysIcon, EyeIcon } from 'lucide-react-native';
-import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import { DefaultStyles } from '../styles';
+import { CustomImage } from '../ui/CustomImage';
 import { Spacer } from '../ui/Spacer';
 import { Text } from '../ui/Text';
 
@@ -66,7 +67,7 @@ export const PostListItem = ({ value }: PostListItemProps) => {
           </View>
         </View>
 
-        <Image
+        <CustomImage
           source={
             value.cover
               ? { uri: value.cover }

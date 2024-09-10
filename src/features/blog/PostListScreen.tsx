@@ -2,18 +2,13 @@ import { PostListItem } from '@/components/blog/PostListItem';
 import { Divider, ListDivider } from '@/components/ui/Divider';
 import { ErrorView } from '@/components/ui/ErrorView';
 import { Loading } from '@/components/ui/Loading';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppSelector, useResetInfiniteQuery } from '@/lib/hooks';
 import { Page, Post } from '@/lib/models';
 import { getPosts } from '@/lib/services/BlogApi';
 import { RootStackParamList } from '@/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import {
-  InfiniteData,
-  useInfiniteQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { Settings2Icon } from 'lucide-react-native';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import {
   FlatList,
@@ -24,7 +19,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { selectTheme } from '../themeSlice';
 
 const PostListScreen = () => {
@@ -61,23 +55,13 @@ const PostListScreen = () => {
     },
   });
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: props => {
-        return (
-          <HeaderButtons>
-            <Item
-              title="Filter"
-              iconName="filter"
-              IconComponent={Settings2Icon as any}
-              color={props.tintColor}
-              onPress={() => {}}
-            />
-          </HeaderButtons>
-        );
-      },
-    });
-  }, [navigation]);
+  const { resetQuery } = useResetInfiniteQuery<Page<Post>>(['/content/posts']);
+
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: PostListHeaderRight,
+  //   });
+  // }, [navigation]);
 
   useEffect(() => {
     const interactionPromise = InteractionManager.runAfterInteractions(() => {
@@ -88,20 +72,6 @@ const PostListScreen = () => {
       interactionPromise.cancel();
     };
   }, [refetch]);
-
-  const resetInfiniteQueryPagination = () => {
-    const queryKey = ['/content/posts'];
-    queryClient.setQueryData<InfiniteData<Page<Post>>>(queryKey, oldData => {
-      if (!oldData) {
-        return undefined;
-      }
-
-      return {
-        pages: oldData.pages.slice(0, 1),
-        pageParams: oldData.pageParams.slice(0, 1),
-      };
-    });
-  };
 
   const renderItem = (info: ListRenderItemInfo<Post>) => {
     return <PostListItem value={info.item} />;
@@ -134,7 +104,7 @@ const PostListScreen = () => {
             colors={[colors.primary]}
             tintColor={'gray'}
             onRefresh={() => {
-              resetInfiniteQueryPagination();
+              resetQuery();
               refetch();
             }}
           />

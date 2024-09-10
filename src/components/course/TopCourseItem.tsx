@@ -6,14 +6,17 @@ import { RootStackParamList } from '@/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ChartNoAxesColumnIncreasingIcon, StarIcon } from 'lucide-react-native';
-import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
+import { Dimensions, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { DefaultStyles } from '../styles';
 import { Spacer } from '../ui/Spacer';
 import { Text } from '../ui/Text';
+import { CustomImage } from '../ui/CustomImage';
 
 interface TopCourseItemProps {
   value: Course;
 }
+
+const screen = Dimensions.get('screen');
 
 export const TopCourseItem = ({ value }: TopCourseItemProps) => {
   const { colors } = useAppSelector(selectTheme);
@@ -34,7 +37,7 @@ export const TopCourseItem = ({ value }: TopCourseItemProps) => {
           borderColor: colors.border,
           backgroundColor: colors.card,
         }}>
-        <Image
+        <CustomImage
           source={
             value.cover
               ? { uri: value.cover }
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
     gap: 12,
     borderRadius: DefaultStyles.values.borderRadius,
     borderWidth: 0.7,
-    width: 320,
+    width: screen.width - 80,
   },
   cover: {
     aspectRatio: 4 / 3,

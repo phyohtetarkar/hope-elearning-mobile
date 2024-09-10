@@ -17,6 +17,8 @@ export type Theme = {
     highlight: string;
     error: string;
     errorForeground: string;
+    success: string;
+    muted: string;
   };
 };
 
@@ -28,9 +30,11 @@ export const LightTheme: Theme = {
     primaryForeground: '#ffffff',
     error: '#d50002',
     errorForeground: '#ffffff',
+    success: '#00a524',
     background: '#ffffff',
     default: '#e5e5e5',
     highlight: '#777777',
+    muted: '#555555',
   },
 };
 
@@ -42,8 +46,10 @@ export const DarkTheme: Theme = {
     primaryForeground: '#f2f2f2',
     error: '#d50002',
     errorForeground: '#ffffff',
+    success: '#00a524',
     background: '#000000',
     default: '#212121',
     highlight: '#777777',
+    muted: '#aaaaaa',
   },
 };

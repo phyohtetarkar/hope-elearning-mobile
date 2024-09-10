@@ -11,10 +11,6 @@ export async function getCategories(
 
   const url = `/content/categories${query}`;
 
-  console.log(url);
-
-  await new Promise(resolve => setTimeout(resolve, 3000));
-
   const resp = await makeApiRequest({
     url,
     options: {

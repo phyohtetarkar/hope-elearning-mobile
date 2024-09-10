@@ -5,13 +5,14 @@ import { formatAbbreviate, uppercaseFirstChar } from '@/lib/utils';
 import { RootStackParamList } from '@/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import { DefaultStyles } from '../styles';
 import { Divider } from '../ui/Divider';
 import { Rating } from '../ui/Rating';
 import { Spacer } from '../ui/Spacer';
 import { Text } from '../ui/Text';
 import { DotIcon } from 'lucide-react-native';
+import { CustomImage } from '../ui/CustomImage';
 
 interface CourseGridItemProps {
   value: Course;
@@ -37,7 +38,7 @@ export const CourseGridItem = ({ value }: CourseGridItemProps) => {
           backgroundColor: colors.card,
         }}>
         <View style={styles.cover}>
-          <Image
+          <CustomImage
             source={
               value.cover
                 ? { uri: value.cover }

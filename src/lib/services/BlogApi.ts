@@ -6,10 +6,6 @@ import { validateApiResponse } from '../validateApiResponse';
 export async function getPostBySlug(slug: string, signal?: AbortSignal) {
   const url = `/content/posts/${slug}`;
 
-  console.log(url);
-
-  await new Promise(resolve => setTimeout(resolve, 3000));
-
   const resp = await makeApiRequest({
     url,
     options: {
@@ -26,10 +22,6 @@ export async function getPosts(params: SearchParams, signal?: AbortSignal) {
   const query = buildQueryParams(params);
 
   const url = `/content/posts${query}`;
-
-  console.log(url);
-
-  await new Promise(resolve => setTimeout(resolve, 3000));
 
   const resp = await makeApiRequest({
     url,

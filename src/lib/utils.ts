@@ -73,7 +73,8 @@ export function formatRelativeTimestamp(
 export function wordPerMinute(wordCount: number) {
   const averageWordPerMinute = 200;
   const wpm = (wordCount * 60) / averageWordPerMinute;
-  return Math.round(wpm / 60);
+  const result = Math.round(wpm / 60);
+  return result > 0 ? result : 1;
 }
 
 export function pluralize(

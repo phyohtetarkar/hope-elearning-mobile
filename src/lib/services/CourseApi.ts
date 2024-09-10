@@ -6,10 +6,6 @@ import { validateApiResponse } from '../validateApiResponse';
 export async function getCourseBySlug(slug: string, signal?: AbortSignal) {
   const url = `/content/courses/${slug}`;
 
-  console.log(url);
-
-  await new Promise(resolve => setTimeout(resolve, 3000));
-
   const resp = await makeApiRequest({
     url,
     options: {
@@ -26,10 +22,6 @@ export async function getCourses(params: SearchParams, signal?: AbortSignal) {
   const query = buildQueryParams(params);
 
   const url = `/content/courses${query}`;
-
-  console.log(url);
-
-  await new Promise(resolve => setTimeout(resolve, 3000));
 
   const resp = await makeApiRequest({
     url,

@@ -61,7 +61,7 @@ const App = () => {
         }
         appState = nextAppState;
 
-        console.log(appState);
+        // console.log(appState);
       },
     );
 

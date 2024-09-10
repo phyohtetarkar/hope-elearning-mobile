@@ -1,5 +1,7 @@
 import { DefaultStyles } from '@/components/styles';
 import { TextButton } from '@/components/ui/Button';
+import { CustomImage } from '@/components/ui/CustomImage';
+import { CustomWebView } from '@/components/ui/CustomWebView';
 import { Divider } from '@/components/ui/Divider';
 import { ErrorView } from '@/components/ui/ErrorView';
 import { Loading } from '@/components/ui/Loading';
@@ -14,7 +16,6 @@ import { useQuery } from '@tanstack/react-query';
 import { ChartNoAxesColumnIncreasingIcon, StarIcon } from 'lucide-react-native';
 import { useEffect, useRef } from 'react';
 import {
-  Image,
   InteractionManager,
   RefreshControl,
   SafeAreaView,
@@ -110,7 +111,7 @@ const CourseDetailScreen = ({ navigation, route }: Props) => {
           }}>
           <View style={styles.container}>
             <View style={styles.coverContainer}>
-              <Image
+              <CustomImage
                 source={
                   data.cover
                     ? { uri: data.cover }
@@ -128,7 +129,7 @@ const CourseDetailScreen = ({ navigation, route }: Props) => {
 
             <Text style={{ ...styles.title }}>{data.title}</Text>
 
-            <Spacer orientation="vertical" spacing={10} />
+            <Spacer orientation="vertical" spacing={12} />
 
             <View style={styles.propsContainer}>
               <View style={styles.propsItem}>
@@ -143,9 +144,33 @@ const CourseDetailScreen = ({ navigation, route }: Props) => {
                   {uppercaseFirstChar(data.level)}
                 </Text>
               </View>
+
+              <View style={{ flex: 1 }} />
+
+              <View
+                style={{ ...styles.accessView, borderColor: colors.success }}>
+                <Text style={{ ...styles.accessText, color: colors.success }}>
+                  {uppercaseFirstChar(data.access)}
+                </Text>
+              </View>
             </View>
 
-            <View style={{ height: 1000 }} />
+            <Spacer orientation="vertical" spacing={28} />
+
+            <Text style={styles.heading}>Description</Text>
+            <Spacer orientation="vertical" spacing={10} />
+
+            <CustomWebView html={data.description} basic />
+
+            <Spacer orientation="vertical" spacing={24} />
+
+            <Text style={styles.heading}>Syllabus</Text>
+            <Spacer orientation="vertical" spacing={10} />
+
+            <Spacer orientation="vertical" spacing={24} />
+
+            <Text style={styles.heading}>Authors</Text>
+            <Spacer orientation="vertical" spacing={10} />
           </View>
         </ScrollView>
         <Divider orientation="horizontal" stroke={0.25} />
@@ -155,6 +180,9 @@ const CourseDetailScreen = ({ navigation, route }: Props) => {
             paddingBottom: insets.bottom + 16,
             backgroundColor: colors.card,
           }}>
+          <View style={{ flex: 1 }}>
+            <TextButton variant="default" title="Reviews" onPress={() => {}} />
+          </View>
           <View style={{ flex: 1 }}>
             <TextButton title="Enroll" onPress={() => {}} />
           </View>
@@ -189,6 +217,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     ...DefaultStyles.fonts.semiBold,
+  },
+  heading: {
+    fontSize: 18,
+    ...DefaultStyles.fonts.semiBold,
+  },
+  accessView: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderWidth: 1,
+    borderRadius: DefaultStyles.values.borderRadius,
+  },
+  accessText: {
+    ...DefaultStyles.fonts.medium,
   },
   propsContainer: {
     flexDirection: 'row',

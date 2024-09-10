@@ -14,6 +14,9 @@ export async function makeApiRequest({
   };
 
   const requestUrl = `${API_URL}${url}`;
+  // console.log(requestUrl);
+
+  // await new Promise(resolve => setTimeout(resolve, 3000));
   const response = await fetch(requestUrl, requestOptions);
 
   if (response.status === 401) {

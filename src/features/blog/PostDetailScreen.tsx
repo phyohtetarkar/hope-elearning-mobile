@@ -1,6 +1,7 @@
 import { DefaultStyles } from '@/components/styles';
 import { Avatar } from '@/components/ui/Avatar';
 import { Chip } from '@/components/ui/Chip';
+import { CustomImage } from '@/components/ui/CustomImage';
 import { CustomWebView } from '@/components/ui/CustomWebView';
 import { Divider } from '@/components/ui/Divider';
 import { ErrorView } from '@/components/ui/ErrorView';
@@ -15,7 +16,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import {
-  Image,
   InteractionManager,
   RefreshControl,
   SafeAreaView,
@@ -41,18 +41,12 @@ const PostDetailScreen = ({ navigation, route }: Props) => {
 
   const [coverRatio, setCoverRatio] = useState(1);
 
-  const {
-    data,
-    error,
-    isPending,
-    isFetching,
-    isLoadingError,
-    refetch,
-  } = useQuery({
-    queryKey: ['/content/posts', slug],
-    queryFn: ({ signal }) => getPostBySlug(slug, signal),
-    enabled: false,
-  });
+  const { data, error, isPending, isFetching, isLoadingError, refetch } =
+    useQuery({
+      queryKey: ['/content/posts', slug],
+      queryFn: ({ signal }) => getPostBySlug(slug, signal),
+      enabled: false,
+    });
 
   useEffect(() => {
     const interactionPromise = InteractionManager.runAfterInteractions(() => {
@@ -177,7 +171,7 @@ const PostDetailScreen = ({ navigation, route }: Props) => {
           <Spacer orientation="vertical" spacing={16} />
 
           <View style={styles.coverContainer}>
-            <Image
+            <CustomImage
               source={
                 data.cover
                   ? { uri: data.cover }
@@ -196,9 +190,9 @@ const PostDetailScreen = ({ navigation, route }: Props) => {
             />
           </View>
 
-          <Spacer orientation="vertical" spacing={20} />
+          <Spacer orientation="vertical" spacing={24} />
 
-          <CustomWebView html="<h2>Hello world</h2>" />
+          <CustomWebView html={data.html} />
 
           <Spacer orientation="vertical" spacing={16} />
 
@@ -240,6 +234,7 @@ const styles = StyleSheet.create({
     ...DefaultStyles.fonts.semiBold,
   },
   minRead: {
+    fontSize: 16,
     textAlign: 'center',
     ...DefaultStyles.fonts.regular,
   },

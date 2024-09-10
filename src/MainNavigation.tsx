@@ -15,6 +15,8 @@ import { CustomStatusBar } from './components/ui/CustomStatusBar';
 import { ToastErrorLayout, ToastInfoLayout } from './components/ui/ToastLayout';
 import PostDetailScreen from './features/blog/PostDetailScreen';
 import CourseDetailScreen from './features/course/CourseDetailScreen';
+import CourseListHeaderRight from './features/course/CourseListHeaderRight';
+import CourseListHeaderTitle from './features/course/CourseListHeaderTitle';
 import CourseListScreen from './features/course/CourseListScreen';
 import { selectTheme } from './features/themeSlice';
 import { useAppSelector } from './lib/hooks';
@@ -110,6 +112,8 @@ const MainNavigation = () => {
               headerBackTitleVisible: false,
               title: 'Courses',
               headerTitleAlign: 'left',
+              headerTitle: CourseListHeaderTitle,
+              headerRight: CourseListHeaderRight,
             })}
           />
           <Stack.Screen

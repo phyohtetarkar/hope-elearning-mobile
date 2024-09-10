@@ -10,8 +10,9 @@ import { RootStackParamList } from '@/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CalendarDaysIcon, EyeIcon } from 'lucide-react-native';
-import { Image, StyleSheet, TouchableHighlight, View } from 'react-native';
+import { Dimensions, StyleSheet, TouchableHighlight, View } from 'react-native';
 import { DefaultStyles } from '../styles';
+import { CustomImage } from '../ui/CustomImage';
 import { Divider } from '../ui/Divider';
 import { Spacer } from '../ui/Spacer';
 import { Text } from '../ui/Text';
@@ -19,6 +20,7 @@ import { Text } from '../ui/Text';
 interface PostRecentItemProps {
   value: Post;
 }
+const screen = Dimensions.get('screen');
 
 export const PostRecentItem = ({ value }: PostRecentItemProps) => {
   const { colors } = useAppSelector(selectTheme);
@@ -40,7 +42,7 @@ export const PostRecentItem = ({ value }: PostRecentItemProps) => {
           backgroundColor: colors.card,
         }}>
         <View style={styles.cover}>
-          <Image
+          <CustomImage
             source={
               value.cover
                 ? { uri: value.cover }
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: DefaultStyles.values.borderRadius,
     borderWidth: 0.7,
     overflow: 'hidden',
-    width: 300,
+    width: screen.width - 80,
   },
   cover: {
     aspectRatio: 16 / 9,
