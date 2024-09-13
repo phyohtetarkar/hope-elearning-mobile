@@ -1,5 +1,7 @@
 import { DefaultStyles } from '@/components/styles';
+import { Avatar } from '@/components/ui/Avatar';
 import { TextButton } from '@/components/ui/Button';
+import { Collapsible } from '@/components/ui/Collapsible';
 import { CustomImage } from '@/components/ui/CustomImage';
 import { CustomWebView } from '@/components/ui/CustomWebView';
 import { Divider } from '@/components/ui/Divider';
@@ -8,6 +10,7 @@ import { Loading } from '@/components/ui/Loading';
 import { Spacer } from '@/components/ui/Spacer';
 import { Text } from '@/components/ui/Text';
 import { useAppSelector } from '@/lib/hooks';
+import { Lesson } from '@/lib/models';
 import { getCourseBySlug } from '@/lib/services/CourseApi';
 import { uppercaseFirstChar } from '@/lib/utils';
 import { RootStackParamList } from '@/navigations';
@@ -21,6 +24,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -29,6 +33,26 @@ import { selectTheme } from '../themeSlice';
 type Props = NativeStackScreenProps<RootStackParamList, 'CourseDetail'>;
 
 const avatarSize = 48;
+
+const LessonItem = (lesson: Lesson) => {
+  const { colors } = useAppSelector(selectTheme);
+  return (
+    <View style={styles.lessonItemContainer}>
+      <Text style={styles.lessonTitle}>{lesson.title}</Text>
+      <View style={{ flex: 1 }} />
+      <TouchableOpacity activeOpacity={0.5} onPress={() => {}}>
+        <Text
+          style={{
+            ...styles.previewText,
+            color: colors.primary,
+            opacity: lesson.trial ? 1 : 0,
+          }}>
+          Preview
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const CourseDetailScreen = ({ navigation, route }: Props) => {
   const { colors } = useAppSelector(selectTheme);
@@ -158,25 +182,55 @@ const CourseDetailScreen = ({ navigation, route }: Props) => {
             <Spacer orientation="vertical" spacing={28} />
 
             <Text style={styles.heading}>Description</Text>
-            <Spacer orientation="vertical" spacing={10} />
-
+            <Spacer orientation="vertical" spacing={8} />
             <CustomWebView html={data.description} basic />
 
-            <Spacer orientation="vertical" spacing={24} />
+            <Spacer orientation="vertical" spacing={22} />
 
             <Text style={styles.heading}>Syllabus</Text>
             <Spacer orientation="vertical" spacing={10} />
+            <View style={styles.chapterContainer}>
+              {data.chapters?.map((c, i) => {
+                return (
+                  <Collapsible
+                    key={i}
+                    data={c.lessons ?? []}
+                    headerTitle={c.title}
+                    renderItem={LessonItem}
+                    kexExtractor={item => item.id.toString()}
+                  />
+                );
+              })}
+            </View>
 
-            <Spacer orientation="vertical" spacing={24} />
+            <Spacer orientation="vertical" spacing={32} />
 
             <Text style={styles.heading}>Authors</Text>
             <Spacer orientation="vertical" spacing={10} />
+            <View style={styles.authorContainer}>
+              {data.authors?.map((a, i) => {
+                return (
+                  <View key={i} style={styles.authorRow}>
+                    <Avatar
+                      src={a.image ? { uri: a.image } : undefined}
+                      name={a.nickname}
+                      size={avatarSize}
+                      borderWidth={0.7}
+                      borderColor={colors.border}
+                    />
+                    <Text style={styles.authorNameText}>{a.nickname}</Text>
+                  </View>
+                );
+              })}
+            </View>
+
+            <Spacer orientation="vertical" spacing={16} />
           </View>
         </ScrollView>
         <Divider orientation="horizontal" stroke={0.25} />
         <View
           style={{
-            ...styles.footerContainer,
+            ...styles.bottomContainer,
             paddingBottom: insets.bottom + 16,
             backgroundColor: colors.card,
           }}>
@@ -247,11 +301,40 @@ const styles = StyleSheet.create({
     color: 'gray',
     ...DefaultStyles.fonts.regular,
   },
-  footerContainer: {
+  authorContainer: {
+    flexDirection: 'column',
+    gap: 16,
+  },
+  authorRow: {
+    flexDirection: 'row',
+    gap: 16,
+    alignItems: 'center',
+  },
+  authorNameText: {
+    fontSize: 16,
+    ...DefaultStyles.fonts.medium,
+  },
+  chapterContainer: {
+    gap: 10,
+  },
+  bottomContainer: {
     flexDirection: 'row',
     alignContent: 'stretch',
     padding: 16,
     gap: 10,
+  },
+  lessonItemContainer: {
+    padding: 14,
+    flexDirection: 'row',
+    gap: 10,
+  },
+  lessonTitle: {
+    flexShrink: 1,
+    ...DefaultStyles.fonts.regular,
+  },
+  previewText: {
+    fontSize: 14,
+    ...DefaultStyles.fonts.medium,
   },
 });
 

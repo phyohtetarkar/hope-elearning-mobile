@@ -1,5 +1,6 @@
 import { DefaultStyles } from '@/components/styles';
 import { Avatar } from '@/components/ui/Avatar';
+import { TextButton } from '@/components/ui/Button';
 import { Chip } from '@/components/ui/Chip';
 import { CustomImage } from '@/components/ui/CustomImage';
 import { CustomWebView } from '@/components/ui/CustomWebView';
@@ -9,11 +10,13 @@ import { Loading } from '@/components/ui/Loading';
 import { Spacer } from '@/components/ui/Spacer';
 import { Text } from '@/components/ui/Text';
 import { useAppSelector } from '@/lib/hooks';
+import { Post } from '@/lib/models';
 import { getPostBySlug } from '@/lib/services/BlogApi';
 import { formatRelativeTimestamp, wordPerMinute } from '@/lib/utils';
 import { RootStackParamList } from '@/navigations';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@tanstack/react-query';
+import { LockKeyholeIcon } from 'lucide-react-native';
 import { useEffect, useRef, useState } from 'react';
 import {
   InteractionManager,
@@ -57,6 +60,39 @@ const PostDetailScreen = ({ navigation, route }: Props) => {
       interactionPromise.cancel();
     };
   }, [refetch, isPending]);
+
+  const body = (post: Post) => {
+    if (post.visibility === 'member') {
+      return (
+        <View
+          style={{
+            ...styles.restrictContainer,
+            backgroundColor: colors.primary,
+          }}>
+          <LockKeyholeIcon color={colors.primaryForeground} />
+          <Text style={{ color: colors.primaryForeground }}>
+            You need to sign in to view this content.
+          </Text>
+          <Spacer orientation="vertical" spacing={6} />
+          <TextButton variant="light" title="Sign In" onPress={() => {}} />
+        </View>
+      );
+    }
+
+    return (
+      <>
+        <CustomWebView html={post.html} />
+
+        <Spacer orientation="vertical" spacing={16} />
+
+        <View style={styles.tagContainer}>
+          {post.tags?.map((tag, i) => {
+            return <Chip key={i} title={tag.name} onPress={() => {}} />;
+          })}
+        </View>
+      </>
+    );
+  };
 
   const content = () => {
     if (isPending) {
@@ -191,16 +227,7 @@ const PostDetailScreen = ({ navigation, route }: Props) => {
           </View>
 
           <Spacer orientation="vertical" spacing={24} />
-
-          <CustomWebView html={data.html} />
-
-          <Spacer orientation="vertical" spacing={16} />
-
-          <View style={styles.tagContainer}>
-            {data.tags?.map((tag, i) => {
-              return <Chip key={i} title={tag.name} onPress={() => {}} />;
-            })}
-          </View>
+          {body(data)}
         </View>
       </ScrollView>
     );
@@ -247,6 +274,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 10,
+  },
+  restrictContainer: {
+    borderRadius: DefaultStyles.values.borderRadius,
+    padding: 16,
+    gap: 10,
+    alignItems: 'center',
   },
 });
 

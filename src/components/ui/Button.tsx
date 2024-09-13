@@ -1,12 +1,19 @@
 import { selectTheme } from '@/features/themeSlice';
 import { useAppSelector } from '@/lib/hooks';
-import { PropsWithChildren, useMemo } from 'react';
-import { StyleSheet, TouchableHighlight, View } from 'react-native';
+import { PropsWithChildren } from 'react';
+import {
+  StyleSheet,
+  TextStyle,
+  TouchableHighlight,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { DefaultStyles } from '../styles';
 import { Text } from './Text';
 
 interface ButtonProps {
-  variant?: 'default' | 'primary';
+  variant?: 'default' | 'primary' | 'danger' | 'light';
+  size?: 'small' | 'medium';
   onPress?: () => void;
 }
 
@@ -16,32 +23,59 @@ interface TextButtonProps extends ButtonProps {
 
 export const Button = ({
   variant = 'primary',
+  size = 'medium',
   onPress,
   children,
 }: PropsWithChildren<ButtonProps>) => {
   const { colors } = useAppSelector(selectTheme);
 
-  const { backgroundColor } = useMemo(() => {
-    if (variant === 'primary') {
+  const getBackgroundColor = (): Pick<ViewStyle, 'backgroundColor'> => {
+    if (variant === 'default') {
       return {
-        backgroundColor: colors.primary,
+        backgroundColor: colors.default,
       };
     }
 
-    return { backgroundColor: colors.default };
-  }, [variant, colors]);
+    if (variant === 'danger') {
+      return {
+        backgroundColor: colors.error,
+      };
+    }
+
+    if (variant === 'light') {
+      return {
+        backgroundColor: '#f2f2f2',
+      };
+    }
+
+    return { backgroundColor: colors.primary };
+  };
+
+  const getSize = (): Pick<ViewStyle, 'height' | 'paddingHorizontal'> => {
+    if (size === 'small') {
+      return {
+        height: 36,
+        paddingHorizontal: 10,
+      };
+    }
+
+    return {
+      height: 46,
+      paddingHorizontal: 16,
+    };
+  };
 
   return (
     <TouchableHighlight
       style={{
         borderRadius: styles.container.borderRadius,
       }}
-      //   underlayColor={colors.highlight}
       onPress={onPress}>
       <View
         style={{
           ...styles.container,
-          backgroundColor: backgroundColor,
+          ...getSize(),
+          ...getBackgroundColor(),
         }}>
         {children}
       </View>
@@ -49,26 +83,35 @@ export const Button = ({
   );
 };
 
-export const TextButton = ({
-  title,
-  onPress,
-  variant = 'primary',
-}: TextButtonProps) => {
+export const TextButton = ({ title, ...props }: TextButtonProps) => {
   const { colors } = useAppSelector(selectTheme);
 
-  const { color } = useMemo(() => {
-    if (variant === 'primary') {
+  const getColor = (): Pick<TextStyle, 'color'> => {
+    const variant = props.variant;
+    if (variant === 'default') {
       return {
-        color: colors.primaryForeground,
+        color: colors.text,
       };
     }
 
-    return { color: colors.text };
-  }, [variant, colors]);
+    if (variant === 'danger') {
+      return {
+        color: colors.errorForeground,
+      };
+    }
+
+    if (variant === 'light') {
+      return {
+        color: '#222222',
+      };
+    }
+
+    return { color: colors.primaryForeground };
+  };
 
   return (
-    <Button variant={variant} onPress={onPress}>
-      <Text style={{ ...styles.title, color: color }}>{title}</Text>
+    <Button {...props}>
+      <Text style={{ ...styles.title, ...getColor() }}>{title}</Text>
     </Button>
   );
 };
@@ -78,8 +121,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 16,
-    height: 46,
     borderRadius: DefaultStyles.values.borderRadius,
   },
   title: {

@@ -58,7 +58,7 @@ export const CustomWebView = ({ html, basic }: CustomWebViewProps) => {
           }
           p, li {
             font-size: 14px;
-            color: ${colors.muted};
+            color: ${colors.text};
           }
           img {
             width: 100%;

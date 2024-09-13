@@ -1,4 +1,4 @@
-# Hope Elearning Mobile
+# Hope Elearning Mobile (On going)
 
 E-learning mobile app project build with [**React Native**](https://reactnative.dev), bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
