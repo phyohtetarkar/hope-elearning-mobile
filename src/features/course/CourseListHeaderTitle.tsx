@@ -1,6 +1,8 @@
-import { DefaultStyles } from '@/components/styles';
 import { useAppSelector } from '@/lib/hooks';
-import { getDefaultHeaderHeight, HeaderTitleProps } from '@react-navigation/elements';
+import {
+  getDefaultHeaderHeight,
+  HeaderTitleProps,
+} from '@react-navigation/elements';
 import {
   Dimensions,
   Platform,
@@ -9,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { selectTheme } from '../themeSlice';
+import { fonts } from '@/components/styles';
 
 const screen = Dimensions.get('window');
 
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    ...DefaultStyles.fonts.regular,
+    ...fonts.regular,
   },
 });
 

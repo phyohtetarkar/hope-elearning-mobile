@@ -4,11 +4,12 @@ import { ScrollView, StyleSheet } from 'react-native';
 const ProfileScreen = () => {
   return (
     <>
-      <Divider orientation="horizontal" stroke={0.5} />
-
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentInsetAdjustmentBehavior="automatic"></ScrollView>
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={{
+          padding: 16,
+        }}></ScrollView>
     </>
   );
 };

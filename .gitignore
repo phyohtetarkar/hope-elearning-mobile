@@ -76,3 +76,6 @@ yarn-error.log
 .vscode
 
 .env
+
+GoogleService-Info.plist
+google-services.json

@@ -2,53 +2,64 @@ import { selectTheme } from '@/features/themeSlice';
 import { useAppSelector } from '@/lib/hooks';
 import { PropsWithChildren } from 'react';
 import {
+  Pressable,
   StyleSheet,
   TextStyle,
-  TouchableHighlight,
   View,
   ViewStyle,
 } from 'react-native';
-import { DefaultStyles } from '../styles';
+import { fonts, modifiers } from '../styles';
+import { Loading } from './Loading';
 import { Text } from './Text';
 
 interface ButtonProps {
   variant?: 'default' | 'primary' | 'danger' | 'light';
   size?: 'small' | 'medium';
   onPress?: () => void;
+  disabled?: boolean;
+  loading?: boolean;
 }
 
 interface TextButtonProps extends ButtonProps {
   title: string;
 }
 
-export const Button = ({
+const Button = ({
   variant = 'primary',
   size = 'medium',
   onPress,
+  disabled,
+  loading,
   children,
 }: PropsWithChildren<ButtonProps>) => {
-  const { colors } = useAppSelector(selectTheme);
+  const { dark, colors } = useAppSelector(selectTheme);
 
-  const getBackgroundColor = (): Pick<ViewStyle, 'backgroundColor'> => {
+  const getColors = () => {
     if (variant === 'default') {
       return {
+        color: colors.text,
         backgroundColor: colors.default,
       };
     }
 
     if (variant === 'danger') {
       return {
+        color: colors.errorForeground,
         backgroundColor: colors.error,
       };
     }
 
     if (variant === 'light') {
       return {
+        color: '#222222',
         backgroundColor: '#f2f2f2',
       };
     }
 
-    return { backgroundColor: colors.primary };
+    return {
+      color: colors.primaryForeground,
+      backgroundColor: colors.primary,
+    };
   };
 
   const getSize = (): Pick<ViewStyle, 'height' | 'paddingHorizontal'> => {
@@ -60,30 +71,49 @@ export const Button = ({
     }
 
     return {
-      height: 46,
+      height: 44,
       paddingHorizontal: 16,
     };
   };
 
+  const { color, backgroundColor } = getColors();
+
   return (
-    <TouchableHighlight
+    <View
       style={{
-        borderRadius: styles.container.borderRadius,
-      }}
-      onPress={onPress}>
-      <View
-        style={{
-          ...styles.container,
-          ...getSize(),
-          ...getBackgroundColor(),
-        }}>
-        {children}
-      </View>
-    </TouchableHighlight>
+        backgroundColor: dark ? 'black' : '#121212',
+        borderRadius: modifiers.borderRadius,
+      }}>
+      <Pressable
+        style={({ pressed }) => [
+          {
+            opacity: disabled || loading || pressed ? 0.85 : 1.0,
+          },
+        ]}
+        disabled={disabled || loading}
+        onPress={onPress}>
+        <View
+          style={{
+            ...styles.container,
+            ...getSize(),
+            backgroundColor: backgroundColor,
+          }}>
+          {loading && (
+            <Loading
+              size={16}
+              strokeWidth={2}
+              color1={color}
+              color2={backgroundColor}
+            />
+          )}
+          {children}
+        </View>
+      </Pressable>
+    </View>
   );
 };
 
-export const TextButton = ({ title, ...props }: TextButtonProps) => {
+const TextButton = ({ title, ...props }: TextButtonProps) => {
   const { colors } = useAppSelector(selectTheme);
 
   const getColor = (): Pick<TextStyle, 'color'> => {
@@ -111,7 +141,7 @@ export const TextButton = ({ title, ...props }: TextButtonProps) => {
 
   return (
     <Button {...props}>
-      <Text style={{ ...styles.title, ...getColor() }}>{title}</Text>
+      <Text style={{ ...fonts.medium, ...getColor() }}>{title}</Text>
     </Button>
   );
 };
@@ -121,9 +151,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    borderRadius: DefaultStyles.values.borderRadius,
-  },
-  title: {
-    ...DefaultStyles.fonts.medium,
+    borderRadius: modifiers.borderRadius,
+    gap: 10,
   },
 });
+
+export { Button, TextButton };

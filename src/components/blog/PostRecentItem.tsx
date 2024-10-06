@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CalendarDaysIcon, EyeIcon } from 'lucide-react-native';
 import { Dimensions, StyleSheet, TouchableHighlight, View } from 'react-native';
-import { DefaultStyles } from '../styles';
+import { modifiers, typography } from '../styles';
 import { CustomImage } from '../ui/CustomImage';
 import { Divider } from '../ui/Divider';
 import { Spacer } from '../ui/Spacer';
@@ -56,13 +56,15 @@ export const PostRecentItem = ({ value }: PostRecentItemProps) => {
         <Divider orientation="horizontal" stroke={0.7} />
 
         <View style={styles.infoContainer}>
-          <Text numberOfLines={2} style={{ ...styles.title }}>
+          <Text numberOfLines={2} style={typography.h5}>
             {value.title}
           </Text>
 
           <Spacer orientation="vertical" spacing={8} />
 
-          <Text numberOfLines={1} style={{ ...styles.wpmText }}>
+          <Text
+            numberOfLines={1}
+            style={{ ...typography.normal, color: 'gray' }}>
             {wordPerMinute(value.wordCount)} min read
           </Text>
 
@@ -100,7 +102,7 @@ export const PostRecentItem = ({ value }: PostRecentItemProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: DefaultStyles.values.borderRadius,
+    borderRadius: modifiers.borderRadius,
     borderWidth: 0.7,
     overflow: 'hidden',
     width: screen.width - 80,
@@ -113,15 +115,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 16,
   },
-  title: {
-    fontSize: 16,
-    ...DefaultStyles.fonts.semiBold,
-  },
-  wpmText: {
-    fontSize: 14,
-    color: 'gray',
-    ...DefaultStyles.fonts.regular,
-  },
   footerContainer: {
     flexDirection: 'row',
     gap: 10,
@@ -132,8 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
-    fontSize: 14,
     color: 'gray',
-    ...DefaultStyles.fonts.regular,
+    ...typography.normal,
   },
 });

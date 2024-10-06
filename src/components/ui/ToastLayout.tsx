@@ -5,7 +5,7 @@ import {
   InfoToast,
   ToastConfigParams,
 } from 'react-native-toast-message';
-import { DefaultStyles } from '../styles';
+import { fonts, modifiers } from '../styles';
 
 const ToastInfoLayout = (props: ToastConfigParams<any>) => {
   const { colors } = useAppSelector(selectTheme);
@@ -17,16 +17,16 @@ const ToastInfoLayout = (props: ToastConfigParams<any>) => {
       text1Style={{
         fontSize: 16,
         color: colors.background,
-        ...DefaultStyles.fonts.regular,
+        ...fonts.regular,
       }}
       text2Style={{
         fontSize: 16,
         color: colors.background,
-        ...DefaultStyles.fonts.regular,
+        ...fonts.regular,
       }}
       style={{
         backgroundColor: colors.text,
-        borderRadius: DefaultStyles.values.borderRadius,
+        borderRadius: modifiers.borderRadius,
         borderLeftWidth: 0,
         height: 'auto',
       }}
@@ -48,16 +48,16 @@ const ToastErrorLayout = (props: ToastConfigParams<any>) => {
       text1Style={{
         fontSize: 16,
         color: colors.errorForeground,
-        ...DefaultStyles.fonts.regular,
+        ...fonts.regular,
       }}
       text2Style={{
         fontSize: 16,
         color: colors.errorForeground,
-        ...DefaultStyles.fonts.regular,
+        ...fonts.regular,
       }}
       style={{
         backgroundColor: colors.error,
-        borderRadius: DefaultStyles.values.borderRadius,
+        borderRadius: modifiers.borderRadius,
         borderLeftWidth: 0,
         height: 'auto',
       }}

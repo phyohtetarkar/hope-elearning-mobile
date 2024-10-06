@@ -150,7 +150,6 @@ const PostListScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-      <Divider orientation="horizontal" stroke={0.5} />
       <View style={styles.container}>{content()}</View>
     </SafeAreaView>
   );

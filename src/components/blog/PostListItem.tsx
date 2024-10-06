@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CalendarDaysIcon, EyeIcon } from 'lucide-react-native';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
-import { DefaultStyles } from '../styles';
+import { modifiers, typography } from '../styles';
 import { CustomImage } from '../ui/CustomImage';
 import { Spacer } from '../ui/Spacer';
 import { Text } from '../ui/Text';
@@ -38,13 +38,13 @@ export const PostListItem = ({ value }: PostListItemProps) => {
           backgroundColor: colors.background,
         }}>
         <View style={styles.infoContainer}>
-          <Text numberOfLines={2} style={{ ...styles.title }}>
+          <Text numberOfLines={2} style={typography.h5}>
             {value.title ?? ''}
           </Text>
 
           <Spacer orientation="vertical" spacing={6} />
 
-          <Text numberOfLines={1} style={{ ...styles.wpmText }}>
+          <Text numberOfLines={1} style={{ ...typography.normal, color: 'gray' }}>
             {wordPerMinute(value.wordCount)} min read
           </Text>
 
@@ -94,20 +94,11 @@ const styles = StyleSheet.create({
     aspectRatio: 3 / 2,
     overflow: 'hidden',
     width: 90,
-    borderRadius: DefaultStyles.values.borderRadius,
+    borderRadius: modifiers.borderRadius,
   },
   infoContainer: {
     flex: 1,
     overflow: 'hidden',
-  },
-  title: {
-    fontSize: 16,
-    ...DefaultStyles.fonts.semiBold,
-  },
-  wpmText: {
-    fontSize: 14,
-    color: 'gray',
-    ...DefaultStyles.fonts.regular,
   },
   footerContainer: {
     flex: 1,
@@ -121,8 +112,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
-    fontSize: 14,
     color: 'gray',
-    ...DefaultStyles.fonts.regular,
+    ...typography.normal,
   },
 });

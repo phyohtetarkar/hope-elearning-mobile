@@ -1,6 +1,6 @@
 import { PostRecentItem } from '@/components/blog/PostRecentItem';
 import { TopCourseItem } from '@/components/course/TopCourseItem';
-import { DefaultStyles } from '@/components/styles';
+import { fonts, typography } from '@/components/styles';
 import { Chip } from '@/components/ui/Chip';
 import { ErrorView } from '@/components/ui/ErrorView';
 import { Loading } from '@/components/ui/Loading';
@@ -72,12 +72,7 @@ const Heading = ({ title, seeAll }: HeadingProps) => {
   return (
     <View style={styles.headingContainer}>
       <View style={{ flex: 1 }}>
-        <Text
-          numberOfLines={1}
-          style={{
-            ...styles.headingTitle,
-            color: colors.text,
-          }}>
+        <Text numberOfLines={1} style={typography.h4}>
           {title}
         </Text>
       </View>
@@ -85,8 +80,8 @@ const Heading = ({ title, seeAll }: HeadingProps) => {
         <TouchableOpacity activeOpacity={0.5} onPress={seeAll}>
           <Text
             style={{
+              ...fonts.medium,
               color: colors.primary,
-              ...DefaultStyles.fonts.medium,
             }}>
             See all
           </Text>
@@ -169,13 +164,7 @@ const HomeScreen = () => {
           />
         }>
         <View style={[themeStyle, styles.container]}>
-          <Text
-            style={{
-              ...styles.searchTitle,
-              color: colors.text,
-            }}>
-            What do you want to learn?
-          </Text>
+          <Text style={typography.h2}>What do you want to learn?</Text>
 
           <Spacer orientation="vertical" spacing={10} />
 
@@ -275,14 +264,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 10,
   },
-  headingTitle: {
-    fontSize: 18,
-    ...DefaultStyles.fonts.semiBold,
-  },
-  searchTitle: {
-    fontSize: 24,
-    ...DefaultStyles.fonts.semiBold,
-  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -294,7 +275,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    ...DefaultStyles.fonts.regular,
+    ...fonts.regular,
   },
   categoryContainer: {
     flex: 1,

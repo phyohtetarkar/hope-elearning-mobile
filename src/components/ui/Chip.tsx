@@ -2,7 +2,7 @@ import { selectTheme } from '@/features/themeSlice';
 import { useAppSelector } from '@/lib/hooks';
 import { useMemo, type ReactNode } from 'react';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
-import { DefaultStyles } from '../styles';
+import { fonts } from '../styles';
 import { Text } from './Text';
 
 interface ChipProps {
@@ -48,7 +48,7 @@ const Chip = ({
         {leading}
         <Text
           style={{
-            ...styles.title,
+            ...fonts.medium,
             color: color,
           }}>
           {title}
@@ -68,9 +68,6 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 18,
     gap: 8,
-  },
-  title: {
-    ...DefaultStyles.fonts.medium,
   },
 });
 

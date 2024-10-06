@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import { getDefaultHeaderHeight } from '@react-navigation/elements';
 import {
   NavigationContainer,
@@ -5,14 +6,16 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BookmarkIcon, Share2Icon } from 'lucide-react-native';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast, { ToastConfig } from 'react-native-toast-message';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import MainTabs from './MainTabs';
-import { DefaultStyles } from './components/styles';
+import { typography } from './components/styles';
 import { CustomStatusBar } from './components/ui/CustomStatusBar';
 import { ToastErrorLayout, ToastInfoLayout } from './components/ui/ToastLayout';
+import SignInScreen from './features/auth/SignInScreen';
+import SignUpScreen from './features/auth/SignUpScreen';
 import PostDetailScreen from './features/blog/PostDetailScreen';
 import CourseDetailScreen from './features/course/CourseDetailScreen';
 import CourseListHeaderRight from './features/course/CourseListHeaderRight';
@@ -29,6 +32,8 @@ const screen = Dimensions.get('window');
 const MainNavigation = () => {
   const navigationRef = useNavigationContainerRef();
   const theme = useAppSelector(selectTheme);
+
+  const { colors } = theme;
 
   const insets = useSafeAreaInsets();
 
@@ -47,36 +52,24 @@ const MainNavigation = () => {
         <CustomStatusBar />
         <Stack.Navigator
           screenOptions={{
-            // header: ({ options, route, navigation }) => {
-            //   return (
-            //     <Header
-            //       {...(options as any)}
-            //       title={getHeaderTitle(options, route.name)}
-            //       headerTitleContainerStyle={{
-            //         flex: 1,
-            //       }}
-            //       headerLeftLabelVisible={false}
-            //       headerShadowVisible={false}
-            //       headerTintColor={theme.colors.text}
-            //       headerStatusBarHeight={insets.top}
-            //       headerLeft={props => (
-            //         <HeaderBackButton
-            //           {...props}
-            //           onPress={() => navigation.pop()}
-            //         />
-            //       )}
-            //     />
-            //   );
-            // },
+            headerBackground: () => {
+              return (
+                <View
+                  style={{
+                    flex: 1,
+                    borderBottomWidth: 0.7,
+                    borderBottomColor: colors.border,
+                    backgroundColor: colors.card,
+                  }}
+                />
+              );
+            },
             headerBackTitleVisible: false,
             headerShadowVisible: false,
-            headerTintColor: theme.colors.text,
-            navigationBarColor: theme.colors.card,
+            headerTintColor: colors.text,
+            navigationBarColor: colors.card,
             animation: 'slide_from_right',
-            headerTitleStyle: {
-              fontSize: 18,
-              ...DefaultStyles.fonts.medium,
-            },
+            headerTitleStyle: typography.headerTitle,
           }}>
           <Stack.Screen
             name="MainTabs"
@@ -84,6 +77,7 @@ const MainNavigation = () => {
             options={{
               title: 'Back',
               headerShown: false,
+              headerBackground: undefined,
               animation: 'fade',
             }}
           />
@@ -91,7 +85,6 @@ const MainNavigation = () => {
             name="BlogDetail"
             component={PostDetailScreen}
             options={({ route }) => ({
-              headerBackTitleVisible: false,
               title: '',
               headerRight: props => {
                 return (
@@ -109,7 +102,6 @@ const MainNavigation = () => {
             name="CourseList"
             component={CourseListScreen}
             options={({ route }) => ({
-              headerBackTitleVisible: false,
               title: 'Courses',
               headerTitleAlign: 'left',
               headerTitle: CourseListHeaderTitle,
@@ -120,7 +112,6 @@ const MainNavigation = () => {
             name="CourseDetail"
             component={CourseDetailScreen}
             options={({ route }) => ({
-              headerBackTitleVisible: false,
               title: '',
               headerRight: props => {
                 return (
@@ -140,6 +131,21 @@ const MainNavigation = () => {
                   </HeaderButtons>
                 );
               },
+            })}
+          />
+
+          <Stack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={({ route }) => ({
+              title: 'Sign In',
+            })}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={({ route }) => ({
+              title: 'Sign Up',
             })}
           />
         </Stack.Navigator>

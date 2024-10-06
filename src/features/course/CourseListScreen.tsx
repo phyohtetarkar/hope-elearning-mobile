@@ -1,5 +1,4 @@
 import { CourseGridItem } from '@/components/course/CourseGridItem';
-import { Divider } from '@/components/ui/Divider';
 import { ErrorView } from '@/components/ui/ErrorView';
 import { Loading } from '@/components/ui/Loading';
 import { Spacer } from '@/components/ui/Spacer';
@@ -20,7 +19,6 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Toast from 'react-native-toast-message';
 import { selectTheme } from '../themeSlice';
 
 const CourseListScreen = () => {
@@ -158,12 +156,7 @@ const CourseListScreen = () => {
     );
   };
 
-  return (
-    <>
-      <Divider orientation="horizontal" stroke={0.5} />
-      <View style={styles.container}>{content()}</View>
-    </>
-  );
+  return <View style={styles.container}>{content()}</View>;
 };
 
 const styles = StyleSheet.create({

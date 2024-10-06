@@ -2,6 +2,7 @@ import { selectTheme } from '@/features/themeSlice';
 import { useAppSelector } from '@/lib/hooks';
 import { forwardRef } from 'react';
 import { Text as NativeText, TextProps } from 'react-native';
+import { typography } from '../styles';
 
 export const Text = forwardRef<NativeText, TextProps>(
   ({ style, ...props }, ref) => {
@@ -13,6 +14,7 @@ export const Text = forwardRef<NativeText, TextProps>(
         style={[
           {
             color: colors.text,
+            ...typography.normal,
           },
           style,
         ]}

@@ -1,45 +1,57 @@
 import { selectTheme } from '@/features/themeSlice';
 import { useAppSelector } from '@/lib/hooks';
-import { useEffect, useRef } from 'react';
-import { Animated, Easing, StyleSheet, View } from 'react-native';
+import { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
 interface LoadingProps {
   size?: number;
   strokeWidth?: number;
+  color1?: string;
+  color2?: string;
 }
 
-export const Loading = ({ size = 44, strokeWidth = 4 }: LoadingProps) => {
+const Loading = ({
+  size = 44,
+  strokeWidth = 4,
+  color1,
+  color2,
+}: LoadingProps) => {
   const { colors } = useAppSelector(selectTheme);
 
-  const spinValue = useRef(new Animated.Value(0)).current;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
+  const rotation = useSharedValue(0);
+
+  const rotateStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        rotate: `${rotation.value}deg`,
+      },
+    ],
+  }));
+
   useEffect(() => {
-    const anim = Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
+    rotation.value = withRepeat(
+      withTiming(360, {
         duration: 1200,
         easing: Easing.linear,
-        useNativeDriver: true,
       }),
+      -1,
     );
-
-    anim.start();
-    return () => {
-      anim.reset();
-    };
-  }, [spinValue]);
-
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
+  }, [rotation]);
 
   return (
     <View style={styles.container}>
-      <Animated.View style={{ transform: [{ rotate: spin }] }}>
+      <Animated.View style={rotateStyle}>
         <Svg
           width={size}
           height={size}
@@ -48,7 +60,7 @@ export const Loading = ({ size = 44, strokeWidth = 4 }: LoadingProps) => {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={colors.default}
+            stroke={color1 ?? colors.default}
             strokeWidth={strokeWidth}
             fill="none"
           />
@@ -56,7 +68,7 @@ export const Loading = ({ size = 44, strokeWidth = 4 }: LoadingProps) => {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={colors.primary}
+            stroke={color2 ?? colors.primary}
             strokeWidth={strokeWidth}
             fill="none"
             strokeDasharray={`${circumference * 0.4} ${circumference}`}
@@ -75,3 +87,5 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
 });
+
+export { Loading };

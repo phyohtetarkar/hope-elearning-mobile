@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { DefaultStyles } from '../styles';
+import { modifiers, typography } from '../styles';
 import { Divider } from './Divider';
 import { Text } from './Text';
 
@@ -82,7 +82,9 @@ function Collapsible<T>({
               },
               headerContainerStyle,
             ]}>
-            <Text style={styles.headerTitle}>{headerTitle}</Text>
+            <Text style={[{ flexShrink: 1 }, typography.h6]}>
+              {headerTitle}
+            </Text>
             <View style={{ flex: 1 }} />
             <View>
               {/* {isCollapsed ? (
@@ -138,7 +140,7 @@ function Collapsible<T>({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: DefaultStyles.values.borderRadius,
+    borderRadius: modifiers.borderRadius,
     borderWidth: 0.7,
     overflow: 'hidden',
   },
@@ -148,10 +150,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
-  },
-  headerTitle: {
-    flexShrink: 1,
-    ...DefaultStyles.fonts.semiBold,
   },
   contentContainer: {
     position: 'absolute',

@@ -19,6 +19,11 @@ export interface SearchParams {
   [key: string]: string | number | undefined;
 }
 
+export interface Credentials {
+  accessToken: string;
+  refreshToken: string;
+}
+
 export interface Audit {
   createdAt: string;
   updatedAt: string;

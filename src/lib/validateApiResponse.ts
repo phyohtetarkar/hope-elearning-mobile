@@ -1,6 +1,10 @@
-import { ApiError } from './errors';
+import { ApiError, UnauthorizedError } from './errors';
 
 export async function validateApiResponse(resp: Response) {
+  if (resp.status === 401) {
+    throw new UnauthorizedError('Unauthorized');
+  }
+
   if (resp.status === 403) {
     throw new ApiError(resp.status, 'FORBIDDEN: Permission denied');
   }

@@ -7,10 +7,10 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ChartNoAxesColumnIncreasingIcon, StarIcon } from 'lucide-react-native';
 import { Dimensions, StyleSheet, TouchableHighlight, View } from 'react-native';
-import { DefaultStyles } from '../styles';
+import { fonts, modifiers, typography } from '../styles';
+import { CustomImage } from '../ui/CustomImage';
 import { Spacer } from '../ui/Spacer';
 import { Text } from '../ui/Text';
-import { CustomImage } from '../ui/CustomImage';
 
 interface TopCourseItemProps {
   value: Course;
@@ -51,7 +51,7 @@ export const TopCourseItem = ({ value }: TopCourseItemProps) => {
             {value.category?.name}
           </Text>
           <Spacer orientation="vertical" spacing={4} />
-          <Text numberOfLines={2} style={{ ...styles.title }}>
+          <Text numberOfLines={2} style={typography.h5}>
             {value.title}
           </Text>
 
@@ -85,25 +85,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     gap: 12,
-    borderRadius: DefaultStyles.values.borderRadius,
+    borderRadius: modifiers.borderRadius,
     borderWidth: 0.7,
     width: screen.width - 80,
   },
   cover: {
     aspectRatio: 4 / 3,
-    borderRadius: DefaultStyles.values.borderRadius,
+    borderRadius: modifiers.borderRadius,
     width: 120,
   },
   infoContainer: {
     flex: 1,
   },
-  title: {
-    fontSize: 16,
-    ...DefaultStyles.fonts.semiBold,
-  },
   category: {
     fontSize: 12,
-    ...DefaultStyles.fonts.medium,
+    ...fonts.medium,
   },
   footerContainer: {
     flexDirection: 'row',
@@ -116,8 +112,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
-    fontSize: 14,
     color: 'gray',
-    ...DefaultStyles.fonts.regular,
+    ...typography.normal,
   },
 });

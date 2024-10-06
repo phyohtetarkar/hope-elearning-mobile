@@ -1,8 +1,8 @@
 import { selectTheme } from '@/features/themeSlice';
 import { useAppSelector } from '@/lib/hooks';
-import type { ImageSourcePropType } from 'react-native';
+import type { ImageSourcePropType, ViewStyle } from 'react-native';
 import { StyleSheet, View } from 'react-native';
-import { DefaultStyles } from '../styles';
+import { fonts } from '../styles';
 import { CustomImage } from './CustomImage';
 import { Text } from './Text';
 
@@ -23,7 +23,7 @@ export const Avatar = ({
 }: AvatarProps) => {
   const { colors } = useAppSelector(selectTheme);
 
-  const baseStyle = {
+  const baseStyle: Pick<ViewStyle, 'width' | 'aspectRatio' | 'borderRadius'> = {
     width: size,
     aspectRatio: 1,
     borderRadius: size / 2,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 14,
-    ...DefaultStyles.fonts.medium,
     position: 'absolute',
+    ...fonts.medium,
   },
 });

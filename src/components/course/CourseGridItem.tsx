@@ -5,14 +5,14 @@ import { formatAbbreviate, uppercaseFirstChar } from '@/lib/utils';
 import { RootStackParamList } from '@/navigations';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { DotIcon } from 'lucide-react-native';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
-import { DefaultStyles } from '../styles';
+import { modifiers, typography } from '../styles';
+import { CustomImage } from '../ui/CustomImage';
 import { Divider } from '../ui/Divider';
 import { Rating } from '../ui/Rating';
 import { Spacer } from '../ui/Spacer';
 import { Text } from '../ui/Text';
-import { DotIcon } from 'lucide-react-native';
-import { CustomImage } from '../ui/CustomImage';
 
 interface CourseGridItemProps {
   value: Course;
@@ -63,19 +63,19 @@ export const CourseGridItem = ({ value }: CourseGridItemProps) => {
         <Divider orientation="horizontal" stroke={0.7} />
 
         <View style={styles.infoContainer}>
-          <Text numberOfLines={2} style={{ ...styles.title }}>
+          <Text numberOfLines={2} style={typography.h5}>
             {value.title}
           </Text>
 
           <Spacer orientation="vertical" spacing={8} />
 
           <View style={styles.subtitleContainer}>
-            <Text style={{ ...styles.footerText }}>
+            <Text style={styles.footerText}>
               {formatAbbreviate(Number(value.meta?.enrolledCount ?? 0))}
               &nbsp;Enrolled
             </Text>
             <DotIcon color={colors.highlight} />
-            <Text style={{ ...styles.level, color: colors.primary }}>
+            <Text style={{ ...typography.normal, color: colors.primary }}>
               {uppercaseFirstChar(value.level)}
             </Text>
           </View>
@@ -83,12 +83,12 @@ export const CourseGridItem = ({ value }: CourseGridItemProps) => {
 
         <Divider orientation="horizontal" stroke={0.5} />
 
-        <View style={{ ...styles.footerContainer }}>
+        <View style={styles.footerContainer}>
           <Rating rating={Number(value.meta?.rating ?? 0)} />
 
           <View style={{ flex: 1 }} />
 
-          <Text style={{ ...styles.footerText, ...DefaultStyles.fonts.medium }}>
+          <Text style={styles.footerText}>
             {uppercaseFirstChar(value.access)}
           </Text>
         </View>
@@ -100,7 +100,7 @@ export const CourseGridItem = ({ value }: CourseGridItemProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: DefaultStyles.values.borderRadius,
+    borderRadius: modifiers.borderRadius,
     borderWidth: 0.7,
     overflow: 'hidden',
   },
@@ -117,14 +117,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 16,
-    ...DefaultStyles.fonts.semiBold,
-  },
-  level: {
-    fontSize: 14,
-    ...DefaultStyles.fonts.regular,
-  },
   footerContainer: {
     flexDirection: 'row',
     gap: 10,
@@ -137,8 +129,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerText: {
-    fontSize: 14,
     color: 'gray',
-    ...DefaultStyles.fonts.regular,
+    ...typography.normal,
   },
 });
